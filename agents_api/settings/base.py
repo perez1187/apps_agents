@@ -7,21 +7,6 @@ env = environ.Env()
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 APPS_DIR = ROOT_DIR / "core_apps"
 
-environ.Env.read_env(os.path.join(ROOT_DIR, '.envs/.local')) #<-- where ever your .env lies inside project directory
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = env.bool("DJANGO_DEBUG", False)
-
-
-# Application definition
-
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,7 +16,9 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-THIRD_PARTY_APPS = [ ]
+THIRD_PARTY_APPS = [ 
+    'storages',
+]
 LOCAL_APPS = [ ] 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -70,28 +57,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'agents_api.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': "prod_24_04_23",
-        # 'NAME': "prod_2023_12_09",
-        'NAME': "dev_2024_02_23",
-        'USER': "doadmin",
-        'PASSWORD': "AVNS_kP5bGpMLKHceXXx4KIv",
-        'HOST': "db-authors-haven-do-user-12886178-0.b.db.ondigitalocean.com",
-        'PORT': "25060",
-    }
-}
-
-
-# DATABASES = {"default": env.db("DATABASE_URL")}
-
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
