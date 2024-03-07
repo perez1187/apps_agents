@@ -8,6 +8,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["example.com"])
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["example.com"])
 
 DATABASES = {
     'default': {
