@@ -8,6 +8,14 @@ User = get_user_model()
 class Profile(models.Model):
 
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
+    agent =  models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name=_("Agent"),
+        related_name='profile_agent',
+        null=True, 
+        blank=True         
+    )
 
     about_user = models.TextField(
         verbose_name=_("about User"),
