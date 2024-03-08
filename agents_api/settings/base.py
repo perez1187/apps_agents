@@ -18,6 +18,13 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [ 
     'storages',
+    "corsheaders",
+    "rangefilter", # django admin range filter
+    "rest_framework",
+    "djoser",
+    "rest_framework_simplejwt", 
+    'drf_spectacular',   
+    'import_export',    
 ]
 LOCAL_APPS = [
     "core_apps.users.users",
@@ -107,6 +114,23 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5    
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Agents API',
+    'DESCRIPTION': 'Technical documentation',
+    'VERSION': '1.0.0',
+    'COMPONENT_SPLIT_REQUEST': True
+    # OTHER SETTINGS
+}
 
 LOGGING = {
     "version": 1,
