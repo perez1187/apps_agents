@@ -9,7 +9,9 @@ urlpatterns = [
     # Optional UI:
     path('api/schema/doc/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), 
     path("api/v1/auth/", include("djoser.urls")),
-    path("api/v1/auth/", include("djoser.urls.jwt")),    
+    path("api/v1/auth/", include("djoser.urls.jwt")), 
+
+    path("api/agent/", include("core_apps.results.agents.urls")), 
 ]
 
 admin.site.site_header = "app accounts"

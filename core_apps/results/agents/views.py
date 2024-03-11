@@ -25,15 +25,15 @@ class AgentListView(generics.ListAPIView):
 
         return queryset
 
-    def list(self,request):
-        # print("jeste,")
-        # print(self.request.user)
-        queryset = self.get_queryset()  
-        results = {
-            "agentResults" : {
-                "by_date":agent_by_date,
-                "by_club":agent_by_club
-            }
-        }          
+    # def list(self,request):
+    #     # print("jeste,")
+    #     # print(self.request.user)
+    #     queryset = self.get_queryset()  
+    #     results = {
+    #         "agentResults" : {
+    #             "by_date":agent_by_date,
+    #             "by_club":agent_by_club
+    #         }
+    #     }          
 
         return Response(results,status.HTTP_200_OK)          
