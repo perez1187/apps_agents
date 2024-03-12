@@ -50,6 +50,9 @@ class AgentListView(generics.ListAPIView):
 class AddPlayer(APIView):
     permission_classes = [permissions.IsAuthenticated,IsAgent]
 
+    # dodac sprawdzenie czy istnieje juz agent
+    # sprawdzic pagination
+
     def post(self, request, format=None):
         print("taak")
         # uid = "b939361e-cc4f-49b6-b386-67bc9364e8a8"
