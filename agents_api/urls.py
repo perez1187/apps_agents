@@ -12,6 +12,7 @@ urlpatterns = [
     path("api/v1/auth/", include("djoser.urls.jwt")), 
 
     path("api/agent/", include("core_apps.results.agents.urls")), 
+    path("api/user/", include("core_apps.users.profiles.urls")), 
 ]
 
 admin.site.site_header = "app accounts"

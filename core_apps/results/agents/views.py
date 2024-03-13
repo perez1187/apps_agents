@@ -15,6 +15,9 @@ from .permissions import IsAgent
 
 
 class AgentListView(generics.ListAPIView):
+    '''
+    Find Players conected with the Agent
+    '''
     permission_classes = [permissions.IsAuthenticated,IsAgent]    
     serializer_class = serializers.AgentListSeriaizer
 
@@ -54,6 +57,10 @@ class AddPlayer(APIView):
     # sprawdzic pagination
 
     def post(self, request, format=None):
+        '''
+        Add player to Agent. 
+        Provide user ID
+        '''
 
         try:
             request.data["id"]
