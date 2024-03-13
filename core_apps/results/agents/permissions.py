@@ -11,3 +11,5 @@ class IsAgent(permissions.BasePermission):
         
         return request.user.is_agent
 
+
+

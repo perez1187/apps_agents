@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import AgentReportsListView
+from .views import ReportView, ReportList
 
 urlpatterns = [
-    path('list/',AgentReportsListView.as_view(),name="AgentReportsListView"),
+    path('<int:pk>',ReportView.as_view(),name="AgentReportsListView"),
+    path('list/',ReportList.as_view(),name="AgentReportsListView"),
+
 ]

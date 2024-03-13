@@ -11,6 +11,7 @@ class AgentReportsListSeriaizer(serializers.ModelSerializer):
         model = Reports
         fields = [
             # 'player',
+            'id',
             'agent',
             'report_date',
             'description',
