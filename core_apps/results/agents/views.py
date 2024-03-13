@@ -54,25 +54,30 @@ class AddPlayer(APIView):
     # sprawdzic pagination
 
     def post(self, request, format=None):
-        print("taak")
-        # uid = "b939361e-cc4f-49b6-b386-67bc9364e8a8"
-        if request.data["id"] :
-            
-            try:
-                find_user = User.objects.get(id=request.data["id"])
-            except:
-                return Response({"error":"Player doesnt exist"},status=status.HTTP_404_NOT_FOUND)
-            # print(find_user[0].pkid) # if we .filter
-            print(find_user.pk)
-            user_profile =Profile.objects.get(user = find_user.pk)
-            print(user_profile.agent)
-            print(request.user)
-            user_profile.agent=request.user
-            user_profile.save()
 
-        print(request.data["id"])
+        try:
+            request.data["id"]
+        except:
+            return Response({"error":"you need to specify ID "},status=status.HTTP_404_NOT_FOUND)
+                 
+        try:
+            find_player = User.objects.get(id=request.data["id"])
+        except:
+            return Response({"error":"Player doesnt exist"},status=status.HTTP_404_NOT_FOUND)
+        
+        # print(find_user[0].pkid) # if we .filter
+        player =Profile.objects.get(user = find_player.pk)
 
-        return Response("yes",status=status.HTTP_201_CREATED)
+        if player.agent is not None:
+            return Response({"error":"Player already have an agent"},status=status.HTTP_404_NOT_FOUND)
+
+        player.agent=request.user
+        player.save()
+
+        return Response({"success":f"Player: {player.user} has been added"},status=status.HTTP_201_CREATED)
+
+     
+        
 
         # serializer = SnippetSerializer(data=request.data)
         # if serializer.is_valid():
