@@ -7,19 +7,23 @@ from core_apps.results.agents.permissions import IsAgent
 from .models import Reports
 from .serializers import AgentReportsListSeriaizer
 from .permissions import IsAgentAndOwner
+from .pagination import Pagination100
 
-
-class ReportList(APIView):
+class ReportList(APIView, Pagination100):
     """
     List all reports belongs to Agent,
     """
-
     permission_classes = [permissions.IsAuthenticated,IsAgentAndOwner] 
 
     def get(self, request, format=None):
+        
         reports = Reports.objects.filter(agent=request.user)
-        serializer = AgentReportsListSeriaizer(reports, many=True)
-        return Response(serializer.data)
+
+        reports_paginate = self.paginate_queryset(reports, request, view=self)
+        serializer = AgentReportsListSeriaizer(reports_paginate, many=True)
+
+        # return Response(serializer.data)
+        return  self.get_paginated_response(serializer.data)
 
     # def post(self, request, format=None):
     #     serializer = AgentReportsListSeriaizer(data=request.data)
