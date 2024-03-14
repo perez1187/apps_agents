@@ -1,13 +1,18 @@
 from django.http import Http404
+from django.db import transaction
 
 from rest_framework import generics,permissions,status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+import pandas as pd
+
 from core_apps.results.agents.permissions import IsAgent
 from .models import Reports
-from .serializers import AgentReportsListSeriaizer
+from .serializers import AgentReportsListSeriaizer,FileUploadSerializer
 from .permissions import IsAgentAndOwner
 from .pagination import Pagination100
+from .exceptions import ServiceUnavailable, MyCustomExcpetion
 
 class ReportList(APIView, Pagination100):
     """
@@ -31,9 +36,6 @@ class ReportList(APIView, Pagination100):
     #         serializer.save()
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-
-
-
 
 class ReportView(APIView):
     """
@@ -68,3 +70,36 @@ class ReportView(APIView):
         report = self.get_object(pk)
         report.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class UploadFileView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAdminUser,IsAgentAndOwner]
+    serializer_class = FileUploadSerializer
+    
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file = serializer.validated_data['file']
+
+        file_type = str(request.data['file'])[-4:]
+
+        if file_type == '.csv':
+            print('csv')
+        elif file_type == 'xlsx':
+            print('xlsx')
+        # print(file_type)
+        else:
+            raise MyCustomExcpetion(
+                detail=
+                    {"error": "wrong file extension. Upload .csv or .xlsx"}, 
+                    status_code=status.HTTP_400_BAD_REQUEST)
+
+        
+        # load sheets
+        reader = pd.read_csv(file)
+        # raise ServiceUnavailable
+    
+        # df_data_studio_report = pd.read_excel(file,'DATA STUDIO REPORT')
+
+        return Response({"status":"tak"},
+                        status.HTTP_201_CREATED)
