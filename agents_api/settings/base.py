@@ -2,6 +2,8 @@ from pathlib import Path
 import environ
 import os
 
+from datetime import timedelta
+
 env = environ.Env()
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
@@ -28,7 +30,11 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     "core_apps.users.users",
-    "core_apps.users.profiles",        
+    "core_apps.users.profiles",  
+
+    "core_apps.results.agents",
+    "core_apps.results.reports", 
+    "core_apps.results.deals",     
  ] 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -131,6 +137,41 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True
     # OTHER SETTINGS
 }
+
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": (
+        "Bearer",
+        "JWT",
+    ),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=999),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=999),
+    "SIGNING_KEY":"cTiizH79Hlcnjul35g9WKjFTV6pyZv1Ii0MovafqWzC5uJrUB9I",
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    
+}
+DJOSER = {
+    "LOGIN_FIELD": "username",
+    # "USER_CREATE_PASSWORD_RETYPE": True,
+    # "USERNAME_CHANGED_EMAIL_CONFIMATION": True,
+    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    # "SEND_CONFIRMATION_EMAIL": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "SET_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    # "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    # "ACTIVATION_URL": "activate/{uid}/{token}",
+    # "SEND_ACTIVATION_EMAIL": True,
+    "SERIALIZERS": {
+        # "user_create": "core_apps.users.serializers.CreateUserSerializer",
+        # "user": "core_apps.users.serializers.UserSerializer",
+        # "current_user": "core_apps.users.serializers.UserSerializer",
+        # "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
+}
+
+
 
 LOGGING = {
     "version": 1,
