@@ -1,4 +1,5 @@
 import pandas as pd
+from core_apps.results.deals.models import Nicknames
 from .models import Reports
 
 def ref_dict(df, currency_dict):
@@ -37,7 +38,7 @@ def ref_dict(df, currency_dict):
 def dict_report_dates(file, agent):
     '''
     fetch file 
-    fetch agent from db and create dict
+    fetch agent reports from db and create dict
     if in the file the is no date, date= today
     check if reports exists in db (date, agent)
     if not, create report and add to dict
@@ -58,12 +59,49 @@ def dict_report_dates(file, agent):
     report_dict["today"]= report_obj.pk
     return report_dict
 
+def dict_nicknames(file, agent):
+    '''
+    fetch file 
+    fetch agent nicknames from db and create dict
+    check if nickname exists in db (nickname, club)
+    if not, create nickname and add to dict
+    return dict of nicknames
+    '''    
+
+    nicknames_dict = {}
+    nicknames_qs = Nicknames.objects.filter(agent=agent).values()
+
+    for nickname in nicknames_qs:
+        record_key = f'{nickname["nickname"]}{nickname["nickname_id"]}'
+        record_value = nickname["id"]
+        nicknames_dict[record_key]= record_value
+    
+    
+    print(nicknames_dict)
+
+    for _,row in file.iterrows():
+        print(row["NICKNAME"])
+        # sprawdzic nickname+ id czy jest w dict, jesli nie
+        # create i dodaj do dict
+    # nicknames_file = file[['NICKNAME', 'PLAYERS']].drop_duplicates()
+    
+    
+    
+    # print(nicknames_file)
+
+
 def uploadCSV(file, request):
 
     reader = pd.read_csv(file)
     # print(request.user)
-    report_dict = dict_report_dates(reader, request.user)
-    print(report_dict)
+    
+    # report_dict = dict_report_dates(reader, request.user)
+    # print(report_dict)
+
+    nicknames_dict = dict_nicknames(reader, request.user)
+
+
+
     # for _, row in reader.iterrows():   
 
     #     club = row["CLUB"]

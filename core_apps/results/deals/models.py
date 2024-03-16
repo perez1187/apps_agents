@@ -26,6 +26,14 @@ class Nicknames(models.Model):
         verbose_name=_("Nickname"), 
         max_length=40, 
     )
+
+    nickname_id = models.CharField(
+        verbose_name=_("Nickname"), 
+        max_length=40, 
+        default="",
+        blank=True, 
+        null=True
+    )
     club = models.CharField(
         verbose_name=_("Club"), 
         max_length=40, 
