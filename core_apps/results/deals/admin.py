@@ -6,6 +6,7 @@ class NicknamesAdmin(admin.ModelAdmin):
         "agent", 
         "player",
         "nickname",
+        "nickname_id",
         "club",
         "rb",
         "rebate",

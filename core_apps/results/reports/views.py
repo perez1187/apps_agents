@@ -5,7 +5,6 @@ from rest_framework import generics,permissions,status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 from core_apps.results.agents.permissions import IsAgent
 from .models import Reports
 from .serializers import AgentReportsListSeriaizer,FileUploadSerializer

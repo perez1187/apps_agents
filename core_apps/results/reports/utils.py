@@ -1,6 +1,10 @@
 import pandas as pd
+import logging
+
 from core_apps.results.deals.models import Nicknames
 from .models import Reports
+
+logger = logging.getLogger(__name__)
 
 def ref_dict(df, currency_dict):
     
@@ -72,23 +76,29 @@ def dict_nicknames(file, agent):
     nicknames_qs = Nicknames.objects.filter(agent=agent).values()
 
     for nickname in nicknames_qs:
-        record_key = f'{nickname["nickname"]}{nickname["nickname_id"]}'
+        record_key = f'{nickname["club"]}{nickname["nickname"]}{nickname["nickname_id"]}'
         record_value = nickname["id"]
+
         nicknames_dict[record_key]= record_value
-    
-    
-    print(nicknames_dict)
 
     for _,row in file.iterrows():
-        print(row["NICKNAME"])
-        # sprawdzic nickname+ id czy jest w dict, jesli nie
-        # create i dodaj do dict
-    # nicknames_file = file[['NICKNAME', 'PLAYERS']].drop_duplicates()
-    
-    
-    
-    # print(nicknames_file)
+        record_key = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'
 
+        if record_key in nicknames_dict:
+            continue
+
+        nickname_obj = Nicknames.objects.create(
+            agent=agent,
+            agents=row["AGENTS"],
+            nickname=row["NICKNAME"],
+            nickname_id=row["PLAYERS"],
+            club=row["CLUB"]
+        )
+
+        nicknames_dict[record_key]=nickname_obj.pk
+        logger.info(f"agent: {agent}: {row['NICKNAME']} Nickname was created")   
+        
+        return nicknames_dict
 
 def uploadCSV(file, request):
 

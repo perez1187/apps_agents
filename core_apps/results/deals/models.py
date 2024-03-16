@@ -22,13 +22,19 @@ class Nicknames(models.Model):
         null=True 
     )    
  
+    agents = models.CharField(
+        verbose_name=_("Agents"), 
+        max_length=40, 
+        blank=True,
+        null=True
+    )
     nickname = models.CharField(
         verbose_name=_("Nickname"), 
         max_length=40, 
     )
 
     nickname_id = models.CharField(
-        verbose_name=_("Nickname"), 
+        verbose_name=_("Nickname ID"), 
         max_length=40, 
         default="",
         blank=True, 
@@ -62,3 +68,6 @@ class Nicknames(models.Model):
     )     
     def __str__(self):
         return self.nickname  
+    
+    class Meta:
+        unique_together = ('agent', 'nickname','nickname_id','club')        
