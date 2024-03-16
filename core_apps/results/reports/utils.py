@@ -1,4 +1,5 @@
 import pandas as pd
+from .models import Reports
 
 def ref_dict(df, currency_dict):
     
@@ -35,24 +36,34 @@ def ref_dict(df, currency_dict):
 
 def dict_report_dates(file, agent):
     '''
-    fetch file and an eagent
-    fetch reports from agent from db and create dict
-    check if reports exists id db (date, agent)
+    fetch file 
+    fetch agent from db and create dict
+    if in the file the is no date, date= today
+    check if reports exists in db (date, agent)
     if not, create report and add to dict
     return dict of reports
     '''
 
     report_dict = {}
-    reports_from_file = file['CLUB'].unique()
-    print(reports_from_file)
-    print(agent)
+    # reports_from_file = file['CLUB'].unique()
+    # print(reports_from_file)
+    # print(agent)
+
+    ''' 
+        for MVP only report today
+    '''
+    report_obj = Reports.objects.create(
+        agent=agent,    
+    )
+    report_dict["today"]= report_obj.pk
+    return report_dict
 
 def uploadCSV(file, request):
 
     reader = pd.read_csv(file)
     # print(request.user)
-    dict_report_dates(reader, request.user)
-
+    report_dict = dict_report_dates(reader, request.user)
+    print(report_dict)
     # for _, row in reader.iterrows():   
 
     #     club = row["CLUB"]
