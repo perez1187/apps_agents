@@ -31,6 +31,8 @@ class Nicknames(models.Model):
     nickname = models.CharField(
         verbose_name=_("Nickname"), 
         max_length=40, 
+        blank=True,
+        null=True
     )
 
     nickname_id = models.CharField(
@@ -43,6 +45,8 @@ class Nicknames(models.Model):
     club = models.CharField(
         verbose_name=_("Club"), 
         max_length=40, 
+        blank=True,
+        null=True
     )
     rb = models.DecimalField(
         verbose_name=_("Rakeback"),

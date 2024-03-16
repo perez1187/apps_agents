@@ -1,10 +1,13 @@
-from rest_framework import generics,permissions
-from rest_framework.views import APIView
+from django.http import Http404
 
-from core_apps.results.agents.permissions import IsAgent
+from rest_framework import generics,permissions,status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from .models import Nicknames
 from .serializers import NicknamesListSeriaizer
 from .pagination import NicknamePagination
+from .permissions import IsAgentAndOwner
 
 
 # class NicknamesListView(generics.ListAPIView):
@@ -27,7 +30,7 @@ class NicknamesListView(APIView, NicknamePagination):
     """
     List all nicknames belongs to Agent,
     """
-    permission_classes = [permissions.IsAuthenticated,IsAgent] 
+    permission_classes = [permissions.IsAuthenticated,IsAgentAndOwner] 
 
     def get(self, request, format=None):
         
@@ -40,5 +43,33 @@ class NicknamesListView(APIView, NicknamePagination):
         return  self.get_paginated_response(serializer.data)
 
 class NicknameDetail(APIView):
-    pass
+    """
+    Retrieve, update or delete a nickname instance.
+    """
+    permission_classes = [permissions.IsAuthenticated,IsAgentAndOwner] 
+
+    def get_object(self, pk):
+
+        # print(request.data["id"])
+        try:
+            obj =  Nicknames.objects.get(pk=pk)
+        except Nicknames.DoesNotExist:
+            raise Http404
+        
+        #  call has object permissions
+        self.check_object_permissions(self.request, obj)  
+        return obj   
+
+    def get(self, request, pk, format=None):
+        nickname = self.get_object(pk,request)
+        serializer = NicknamesListSeriaizer(nickname)
+        return Response(serializer.data)        
+
+    def put(self, request, pk, format=None):
+        nickname = self.get_object(pk)
+        serializer = NicknamesListSeriaizer(nickname, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   

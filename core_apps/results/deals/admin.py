@@ -3,6 +3,7 @@ from .models import Nicknames
 
 class NicknamesAdmin(admin.ModelAdmin):
     list_display = [
+        "id",
         "agent", 
         "player",
         "nickname",
