@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+
 from .models import Nicknames
 
 from django.contrib.auth import get_user_model
@@ -58,7 +60,15 @@ class NicknameSeriaizer(serializers.ModelSerializer):
 
 class NicknameUpdateSeriaizer(serializers.ModelSerializer):
 
+   
     player_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
+    # def validate_player_id(self,value):
+    #     print("jestten")
+    #     print(self)
+    #     # print(self.fields['player_id'].queryset)
+    #     return value
+
 
     class Meta:
         model = Nicknames

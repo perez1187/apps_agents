@@ -77,9 +77,15 @@ def dict_nicknames(file, agent):
 
     for nickname in nicknames_qs:
         record_key = f'{nickname["club"]}{nickname["nickname"]}{nickname["nickname_id"]}'
-        record_value = nickname["id"]
+        record_value =  {
+            "id":nickname["id"],
+            
+        }
+        
+        
 
         nicknames_dict[record_key]= record_value
+
 
     for _,row in file.iterrows():
         record_key = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'

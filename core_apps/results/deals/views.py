@@ -4,10 +4,13 @@ from rest_framework import generics,permissions,status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from core_apps.users.profiles.models import Profile
+
 from .models import Nicknames
 from .serializers import NicknamesListSeriaizer, NicknameSeriaizer, NicknameUpdateSeriaizer
 from .pagination import NicknamePagination
 from .permissions import IsAgentAndOwner
+from .exceptions import TemplateExcpetion
 
 
 # class NicknamesListView(generics.ListAPIView):
@@ -67,9 +70,44 @@ class NicknameDetail(APIView):
 
     def put(self, request, pk, format=None):
         nickname = self.get_object(pk)
+        # print(request.data["player_id"])
+        try:
+            obj = Profile.objects.get(
+                user=request.data["player_id"]
+            )
+        except:
+            raise TemplateExcpetion(
+                detail=
+                    {"error": "wrong player_id"}, 
+                    status_code=status.HTTP_400_BAD_REQUEST)            
+        # print(request.user.pkid)
+        # print(obj.agent.pkid)
+        if request.user.pkid != obj.agent.pkid:
+            raise TemplateExcpetion(
+                detail=
+                    {"error": "wrong player_id"}, 
+                    status_code=status.HTTP_400_BAD_REQUEST)  
+
         serializer = NicknameUpdateSeriaizer(nickname, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
+
+# class NicknameUpdate(APIView):
+#     """
+#     update nickname instance.
+#     """
+#     permission_classes = [permissions.IsAuthenticated,IsAgentAndOwner] 
+
+#     def get_object(self, pk):
+
+#         # print(request.data["id"])
+#         try:
+#             obj =  Nicknames.objects.get(pk=pk)
+#         except Nicknames.DoesNotExist:
+#             raise Http404
+        
+#         #  call has object permissions
+#         self.check_object_permissions(self.request, obj)  
+#         return obj     
