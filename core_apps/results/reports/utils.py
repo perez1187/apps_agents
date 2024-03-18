@@ -77,15 +77,14 @@ def dict_nicknames(file, agent):
 
     for nickname in nicknames_qs:
         record_key = f'{nickname["club"]}{nickname["nickname"]}{nickname["nickname_id"]}'
-        record_value =  {
+        record_value = {
             "id":nickname["id"],
-            
+            "rb":nickname["rb"],
+            "rebate":nickname["rebate"]
         }
-        
-        
 
         nicknames_dict[record_key]= record_value
-
+        
 
     for _,row in file.iterrows():
         record_key = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'
@@ -101,16 +100,25 @@ def dict_nicknames(file, agent):
             club=row["CLUB"]
         )
 
-        nicknames_dict[record_key]=nickname_obj.pk
+        nicknames_dict[record_key]= {
+            "id":nickname_obj.pk,
+            "rb":0,
+            "rebate":0
+        }     
+        
         logger.info(f"agent: {agent}: {row['NICKNAME']} Nickname was created")   
         
-        return nicknames_dict
+    return nicknames_dict
 
 def uploadCSV(file, request):
 
     reader = pd.read_csv(file)
-    # print(request.user)
     
+    ''' 
+    for mvp only 1 report,
+    key: ["today]
+    value: id
+    '''
     # report_dict = dict_report_dates(reader, request.user)
     # print(report_dict)
 
