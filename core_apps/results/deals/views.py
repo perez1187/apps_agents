@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Nicknames
-from .serializers import NicknamesListSeriaizer
+from .serializers import NicknamesListSeriaizer, NicknameSeriaizer, NicknameUpdateSeriaizer
 from .pagination import NicknamePagination
 from .permissions import IsAgentAndOwner
 
@@ -61,13 +61,13 @@ class NicknameDetail(APIView):
         return obj   
 
     def get(self, request, pk, format=None):
-        nickname = self.get_object(pk,request)
-        serializer = NicknamesListSeriaizer(nickname)
+        nickname = self.get_object(pk)
+        serializer = NicknameSeriaizer(nickname)
         return Response(serializer.data)        
 
     def put(self, request, pk, format=None):
         nickname = self.get_object(pk)
-        serializer = NicknamesListSeriaizer(nickname, data=request.data)
+        serializer = NicknameUpdateSeriaizer(nickname, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
