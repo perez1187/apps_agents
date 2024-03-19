@@ -13,6 +13,12 @@ class Results(models.Model):
         verbose_name=_("Report"),
         related_name='results_report',  
     )
+    nickname_fk =  models.ForeignKey(
+        Nicknames,
+        on_delete=models.CASCADE,
+        verbose_name=_("Nickname FK"),
+        related_name='results_nickname',  
+    )    
     
     # nickname fk
     # club 

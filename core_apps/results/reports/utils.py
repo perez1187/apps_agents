@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 
 from core_apps.results.deals.models import Nicknames
+from core_apps.results.results.models import Results
 from .models import Reports
 
 logger = logging.getLogger(__name__)
@@ -119,12 +120,31 @@ def uploadCSV(file, request):
     key: ["today]
     value: id
     '''
-    # report_dict = dict_report_dates(reader, request.user)
+    report_dict = dict_report_dates(reader, request.user)
     # print(report_dict)
 
     nicknames_dict = dict_nicknames(reader, request.user)
 
+    for _,row in reader.iterrows():
+        nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'        
 
+        # print(row["CLUB"])
+        result_obj = Results.objects.create(
+            report_id=report_dict["today"],
+            nickname_fk_id=nicknames_dict[nickname_fk]["id"],
+            club=row["CLUB"],
+            nickname_id=row["PLAYERS"],
+            nickname=row["NICKNAME"],
+            agents=row["AGENTS"],
+            profit_loss=row["PROFIT/LOSS"],
+            rake= row["RAKE"],
+            agent_deal=row["DEAL"],
+            agent_rb=row["RAKEBACK"],
+            agent_adjustment=row["ADJUSTMENT"],
+            agent_settlement=row["AGENT SETTLEMENT"]
+        )
+        logger.info(f"result {result_obj.pk} was created")   
+                
 
     # for _, row in reader.iterrows():   
 
