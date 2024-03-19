@@ -76,6 +76,6 @@ class Nicknames(models.Model):
     class Meta:
         unique_together = ('agent', 'nickname','nickname_id','club')        
 
-class Deals(models.Model):
-    # report, nickname, rb, rebate, created, updated
-    pass
+# class Deals(models.Model):
+#     # report, nickname, rb, rebate, created, updated
+#     pass

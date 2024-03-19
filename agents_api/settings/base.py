@@ -34,7 +34,8 @@ LOCAL_APPS = [
 
     "core_apps.results.agents",
     "core_apps.results.reports", 
-    "core_apps.results.deals",     
+    "core_apps.results.deals",   
+    "core_apps.results.results",  
  ] 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
