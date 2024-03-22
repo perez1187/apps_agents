@@ -3,14 +3,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, generics, filters, permissions
 
+from django.db.models import OuterRef, Subquery, Sum, Count
+
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
 from core_apps.users.profiles.models import Profile
-from . import serializers
+from core_apps.results.results.models import Results
+from . import serializers 
 # from core import models
 from .permissions import IsAgent
+from .pagination import Pagination100
 
 
 
@@ -93,3 +97,27 @@ class AddPlayer(APIView):
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PlayerResults(APIView, Pagination100):
+    """
+    List all reports belongs to Agent,
+    """
+    # permission_classes = [permissions.IsAuthenticated,IsAgentAndOwner] 
+
+    def get(self, request, format=None):
+        
+        # players = Profile.objects.filter(agent=request.user)
+        players =  Profile.objects.annotate(
+           _profit_loss_USD=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(profit_loss=Sum("profit_loss"))
+               .values("profit_loss")
+           )
+       )
+
+
+        players_paginate = self.paginate_queryset(players, request, view=self)
+        serializer = serializers.PlayerResultsSerializer(players_paginate, many=True)
+
+        # return Response(serializer.data)
+        return  self.get_paginated_response(serializer.data)
