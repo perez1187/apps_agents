@@ -110,47 +110,43 @@ class Results(models.Model):
         blank=True, 
         default=00.000,
     )      
+       
+    player_rb =  models.DecimalField(
+        verbose_name=_("Player RB"),
+        max_digits=15, 
+        decimal_places=3, 
+        null=True, 
+        blank=True, 
+        default=00.000,
+    )    
+    player_adjustment =  models.DecimalField(
+        verbose_name=_("Player adjustment"),
+        max_digits=15, 
+        decimal_places=3, 
+        null=True, 
+        blank=True, 
+        default=00.000,
+    )    
+    player_settlement =  models.DecimalField(
+        verbose_name=_("Player settlement"),
+        max_digits=15, 
+        decimal_places=3, 
+        null=True, 
+        blank=True, 
+        default=00.000,
+    )
+    agent_earnings =  models.DecimalField(
+        verbose_name=_("Agent earn"),
+        max_digits=15, 
+        decimal_places=3, 
+        null=True, 
+        blank=True, 
+        default=00.000,
+    )    
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-    )         
-    # player_rb =  models.DecimalField(
-    #     verbose_name=_("Player RB"),
-    #     max_digits=15, 
-    #     decimal_places=3, 
-    #     null=True, 
-    #     blank=True, 
-    #     default=00.000,
-    # )    
-    # player_adjustment =  models.DecimalField(
-    #     verbose_name=_("Player adjustment"),
-    #     max_digits=15, 
-    #     decimal_places=3, 
-    #     null=True, 
-    #     blank=True, 
-    #     default=00.000,
-    # )    
-    # player_settlement =  models.DecimalField(
-    #     verbose_name=_("Player settlement"),
-    #     max_digits=15, 
-    #     decimal_places=3, 
-    #     null=True, 
-    #     blank=True, 
-    #     default=00.000,
-    # )               
+    )                 
 
-
-
-       
-    
-    # nickname id
-    #  nickname
-    # agents
-    # pl
-    # rake
-    # agent deal
-    # rb
-    # adjustment
-    # agent settlement

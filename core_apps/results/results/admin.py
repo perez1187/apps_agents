@@ -18,6 +18,10 @@ class ResultsAdmin(admin.ModelAdmin):
         "agent_settlement",
         "player_deal_rb",
         "player_deal_adjustment",
+        "player_rb",
+        "player_adjustment",
+        "player_settlement",
+        "agent_earnings",
         "created_at",
         "updated_at"
         ]

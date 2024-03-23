@@ -1,5 +1,6 @@
 import pandas as pd
 import logging
+import decimal
 
 from core_apps.results.deals.models import Nicknames
 from core_apps.results.results.models import Results
@@ -126,22 +127,39 @@ def uploadCSV(file, request):
     nicknames_dict = dict_nicknames(reader, request.user)
 
     for _,row in reader.iterrows():
-        nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'        
+        nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'  
+        player_rb = decimal.Decimal(row["RAKE"])*decimal.Decimal(nicknames_dict[nickname_fk]["rb"])
+        player_adj = (decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"])
 
         # print(row["CLUB"])
         result_obj = Results.objects.create(
+            # metadata
             report_id=report_dict["today"],
             nickname_fk_id=nicknames_dict[nickname_fk]["id"],
             club=row["CLUB"],
             nickname_id=row["PLAYERS"],
             nickname=row["NICKNAME"],
             agents=row["AGENTS"],
+
+            # player and agent results
             profit_loss=row["PROFIT/LOSS"],
             rake= row["RAKE"],
+
             agent_deal=row["DEAL"],
             agent_rb=row["RAKEBACK"],
             agent_adjustment=row["ADJUSTMENT"],
-            agent_settlement=row["AGENT SETTLEMENT"]
+            agent_settlement=row["AGENT SETTLEMENT"],
+
+            # player deal
+            player_deal_rb=nicknames_dict[nickname_fk]["rb"],
+            player_deal_adjustment=nicknames_dict[nickname_fk]["rebate"],
+
+            player_rb=player_rb,
+            player_adjustment=player_adj,
+            player_settlement= decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+
+            agent_earnings =decimal.Decimal(row["AGENT SETTLEMENT"]) - decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+
         )
         logger.info(f"result {result_obj.pk} was created")   
                 
