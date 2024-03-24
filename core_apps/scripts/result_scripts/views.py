@@ -8,17 +8,13 @@ from .serializers import FileUploadSerializer
 from .utils import uploadCSV
 from .permissions import IsAgentAndOwner
 
-class CreateNicknames(generics.CreateAPIView):
+class CreateResults(generics.CreateAPIView):
     '''
     .csv file.
     Columns:
-    - player
+    - username
+    - pass
     - agent
-    - club
-    - rb
-    - adj
-
-    (there are no nickname_id)
 
     Permissions:
     - Agent

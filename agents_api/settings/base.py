@@ -38,7 +38,8 @@ LOCAL_APPS = [
     "core_apps.results.results", 
 
     "core_apps.scripts.user_scripts",
-    "core_apps.scripts.nickname_scripts",    
+    "core_apps.scripts.nickname_scripts",
+    "core_apps.scripts.result_scripts",    
 
  ] 
 

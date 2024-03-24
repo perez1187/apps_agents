@@ -56,6 +56,9 @@ def dict_report_dates(file, agent):
     # print(reports_from_file)
     # print(agent)
 
+
+
+
     ''' 
         for MVP only report today
     '''
@@ -121,7 +124,12 @@ def uploadCSV(file, request):
     key: ["today]
     value: id
     '''
+    # tworzy raporty ( po dacie)
+    # pobiera nicki, ew dodaje nowe
+    #  
+
     report_dict = dict_report_dates(reader, request.user)
+    
     # print(report_dict)
 
     nicknames_dict = dict_nicknames(reader, request.user)
