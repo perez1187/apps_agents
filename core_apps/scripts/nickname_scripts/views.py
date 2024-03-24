@@ -12,9 +12,11 @@ class CreateNicknames(generics.CreateAPIView):
     '''
     .csv file.
     Columns:
-    - username
-    - pass
+    - player
     - agent
+    - club
+    - rb
+    - adj
 
     Permissions:
     - Agent
