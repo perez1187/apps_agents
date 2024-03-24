@@ -8,7 +8,7 @@ from .serializers import FileUploadSerializer
 from .utils import uploadCSV
 from .permissions import IsAgentAndOwner
 
-class CreateUsernames(generics.CreateAPIView):
+class CreateNicknames(generics.CreateAPIView):
     '''
     .csv file.
     Columns:

@@ -78,7 +78,7 @@ def dict_nicknames(file, agent):
     nicknames_qs = Nicknames.objects.filter(agent=agent).values()
 
     for nickname in nicknames_qs:
-        record_key = f'{nickname["club"]}{nickname["nickname"]}{nickname["nickname_id"]}'
+        record_key = f'{nickname["club"]}{nickname["nickname"]}'
         record_value = {
             "id":nickname["id"],
             "rb":nickname["rb"],
@@ -89,7 +89,7 @@ def dict_nicknames(file, agent):
         
 
     for _,row in file.iterrows():
-        record_key = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'
+        record_key = f'{row["CLUB"]}{row["NICKNAME"]}'
 
         if record_key in nicknames_dict:
             continue
@@ -127,7 +127,7 @@ def uploadCSV(file, request):
     nicknames_dict = dict_nicknames(reader, request.user)
 
     for _,row in reader.iterrows():
-        nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}{row["PLAYERS"]}'  
+        nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}'  
         player_rb = decimal.Decimal(row["RAKE"])*decimal.Decimal(nicknames_dict[nickname_fk]["rb"])
         player_adj = (decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"])
 

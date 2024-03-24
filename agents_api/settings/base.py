@@ -36,7 +36,9 @@ LOCAL_APPS = [
     "core_apps.results.reports", 
     "core_apps.results.deals",   
     "core_apps.results.results", 
+
     "core_apps.scripts.user_scripts",
+    "core_apps.scripts.nickname_scripts",    
 
  ] 
 
