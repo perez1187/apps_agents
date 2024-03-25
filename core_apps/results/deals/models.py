@@ -50,16 +50,16 @@ class Nicknames(models.Model):
     )
     rb = models.DecimalField(
         verbose_name=_("Rakeback"),
-        max_digits=6, 
-        decimal_places=2, 
+        max_digits=7, 
+        decimal_places=3, 
         null=False, 
         blank=False, 
         default=00.00)  
 
     rebate = models.DecimalField(
         verbose_name=_("Rebate"),
-        max_digits=6, 
-        decimal_places=2, 
+        max_digits=7, 
+        decimal_places=3, 
         null=False, 
         blank=False, 
         default=00.00)                  

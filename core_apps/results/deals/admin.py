@@ -15,7 +15,7 @@ class NicknamesAdmin(admin.ModelAdmin):
         "updated_at"
         ]
     list_display_links = ["nickname"]
-    # search_fields = ["user__username"]
+    search_fields = ["nickname"]
 
 admin.site.register(Nicknames, NicknamesAdmin)
 
@@ -25,6 +25,6 @@ class ClubsAdmin(admin.ModelAdmin):
         "club"
         ]
     list_display_links = ["club"]
-    # search_fields = ["user__username"]
+    search_fields = ["club"]
 
 admin.site.register(Clubs, ClubsAdmin)

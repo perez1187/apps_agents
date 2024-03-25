@@ -7,6 +7,7 @@ User = get_user_model()
 
 from core_apps.users.profiles.models import Profile
 from core_apps.results.deals.models import Nicknames
+from core_apps.results.deals.models import Clubs
 # from core_apps.results.results.models import Results
 
 
@@ -24,6 +25,27 @@ def dict_usernames(agent):
     
     return user_dict
 
+def club_dict(df):
+
+    clubs_dict  = {}
+    clubs_unique = df['club'].unique()
+    club_qs = Clubs.objects.all().values()
+
+    for club in club_qs:
+        clubs_dict[club["club"]] = club["id"] 
+        # print(club)
+
+    for c in clubs_unique:
+        if c in clubs_dict:
+            continue
+        club_obj = Clubs.objects.create(
+            club=c
+        )
+
+        logger.info(f"club {c} was created")
+    logger.info(f"return club dict")
+    return clubs_dict
+
 def uploadCSV(file, request):
   
     reader = pd.read_csv(file)
@@ -31,8 +53,9 @@ def uploadCSV(file, request):
     agent = request.user  
 
     dict_users=dict_usernames(agent)
+    dict_club = club_dict(reader)
     # print(reader)
-
+    return
     df1 = reader.drop_duplicates(subset=["nickname","club"])
     # print(df1)
     # return

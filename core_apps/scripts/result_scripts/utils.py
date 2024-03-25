@@ -13,6 +13,54 @@ from .exceptions import TemplateExcpetion
 logger = logging.getLogger(__name__)
 
 
+def dict_nicknames(file, agent):
+    '''
+    fetch file 
+    fetch agent nicknames from db and create dict
+    check if nickname exists in db (nickname, club)
+    if not, create nickname and add to dict
+    return dict of nicknames
+    '''    
+
+    nicknames_dict = {}
+    nicknames_qs = Nicknames.objects.filter(agent=agent).values()
+
+    for nickname in nicknames_qs:
+        record_key = f'{nickname["club"]}{nickname["nickname"]}'
+        record_value = {
+            "id":nickname["id"],
+            "rb":nickname["rb"],
+            "rebate":nickname["rebate"]
+        }
+
+        nicknames_dict[record_key]= record_value
+        
+
+    for _,row in file.iterrows():
+        record_key = f'{row["CLUB"]}{row["NICKNAME"]}'
+        print(record_key)
+
+        if record_key in nicknames_dict:
+            continue
+
+        nickname_obj = Nicknames.objects.create(
+            agent=agent,
+            agents=row["AGENTS"],
+            nickname=row["NICKNAME"],
+            nickname_id=row["PLAYERS"],
+            club=row["CLUB"]
+        )
+
+        nicknames_dict[record_key]= {
+            "id":nickname_obj.pk,
+            "rb":0,
+            "rebate":0
+        }     
+        
+        logger.info(f"agent: {agent}: {row['NICKNAME']} Nickname was created")   
+        
+    return nicknames_dict
+
 def dict_report_dates(df, agent):
     '''
     fetch file 
@@ -67,6 +115,7 @@ def club_dict(df):
         club_obj = Clubs.objects.create(
             club=c
         )
+
         logger.info(f"club {c} was created")
     return clubs_dict
 
@@ -78,16 +127,16 @@ def uploadCSV(file, request):
     # pobiera nicki, ew dodaje nowe
     #  
 
-    # report_dict = dict_report_dates(reader, request.user)
+    report_dict = dict_report_dates(reader, request.user)
     # print(report_dict)
 
     club_dic = club_dict(reader)
     print(club_dic)
-    return
-    raise TemplateExcpetion(
-        detail=
-            {"error": "wrong file extension. Upload .csv or .xlsx"}, 
-            status_code=status.HTTP_400_BAD_REQUEST)    
+    # return
+    # raise TemplateExcpetion(
+    #     detail=
+    #         {"error": "wrong file extension. Upload .csv or .xlsx"}, 
+    #         status_code=status.HTTP_400_BAD_REQUEST)    
         
     # print(report_dict)
 
@@ -101,8 +150,9 @@ def uploadCSV(file, request):
         # print(row["CLUB"])
         result_obj = Results.objects.create(
             # metadata
-            report_id=report_dict["today"],
+            report_id=report_dict[row["DATE"]],
             nickname_fk_id=nicknames_dict[nickname_fk]["id"],
+            club_fk=club_dic[row["CLUB"]],
             club=row["CLUB"],
             nickname_id=row["PLAYERS"],
             nickname=row["NICKNAME"],
