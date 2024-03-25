@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Nicknames
+from .models import Nicknames, Clubs
 
 class NicknamesAdmin(admin.ModelAdmin):
     list_display = [
@@ -18,3 +18,13 @@ class NicknamesAdmin(admin.ModelAdmin):
     # search_fields = ["user__username"]
 
 admin.site.register(Nicknames, NicknamesAdmin)
+
+class ClubsAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "club"
+        ]
+    list_display_links = ["club"]
+    # search_fields = ["user__username"]
+
+admin.site.register(Clubs, ClubsAdmin)

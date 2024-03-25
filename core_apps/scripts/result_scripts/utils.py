@@ -2,10 +2,13 @@ import pandas as pd
 import logging
 import decimal
 
-from core_apps.results.deals.models import Nicknames
+from rest_framework import status
+
+from core_apps.results.deals.models import Nicknames, Clubs
 from core_apps.results.results.models import Results
 from core_apps.results.reports.models import Reports
-# from .models import Reports
+
+from .exceptions import TemplateExcpetion
 
 logger = logging.getLogger(__name__)
 
@@ -37,20 +40,35 @@ def dict_report_dates(df, agent):
     for date in report_date:
         if date in report_dict:
             continue
+
+        report_obj = Reports.objects.create(
+            agent=agent,  
+            report_date=date  
+        )
+        report_dict[report_obj.report_date]= report_obj.pk  
+        logger.info(f"agent: {agent}: created report {report_obj.report_date}")       
         
 
-    # print(report_dict)
-    # if example_date in report_dict:
-    #     print("dziala")
-    # else:
-    #     print("nie")
-
-    # report_obj = Reports.objects.create(
-    #     agent=agent,    
-    # )
-    # report_dict["today"]= report_obj.pk
     return report_dict
 
+def club_dict(df):
+
+    clubs_dict  = {}
+    clubs_unique = df['CLUB'].unique()
+    club_qs = Clubs.objects.all().values()
+
+    for club in club_qs:
+        clubs_dict[club["club"]] = club["id"] 
+        # print(club)
+
+    for c in clubs_unique:
+        if c in clubs_dict:
+            continue
+        club_obj = Clubs.objects.create(
+            club=c
+        )
+        logger.info(f"club {c} was created")
+    return clubs_dict
 
 def uploadCSV(file, request):
 
@@ -60,8 +78,17 @@ def uploadCSV(file, request):
     # pobiera nicki, ew dodaje nowe
     #  
 
-    report_dict = dict_report_dates(reader, request.user)
-    return    
+    # report_dict = dict_report_dates(reader, request.user)
+    # print(report_dict)
+
+    club_dic = club_dict(reader)
+    print(club_dic)
+    return
+    raise TemplateExcpetion(
+        detail=
+            {"error": "wrong file extension. Upload .csv or .xlsx"}, 
+            status_code=status.HTTP_400_BAD_REQUEST)    
+        
     # print(report_dict)
 
     nicknames_dict = dict_nicknames(reader, request.user)

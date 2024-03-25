@@ -6,6 +6,8 @@ class ResultsAdmin(admin.ModelAdmin):
         "id",
         "report", 
         # "player",
+        "club_fk",
+        "nickname_fk",
         "nickname",
         "nickname_id",
         "agents",

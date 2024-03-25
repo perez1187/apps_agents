@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from core_apps.results.reports.models import Reports
 from core_apps.results.deals.models import Nicknames
+from core_apps.results.deals.models import Clubs
 
 class Results(models.Model):
 
@@ -18,7 +19,15 @@ class Results(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("Nickname FK"),
         related_name='results_nickname',  
-    )    
+    )  
+    club_fk =  models.ForeignKey(
+        Nicknames,
+        on_delete=models.CASCADE,
+        verbose_name=_("Club FK"),
+        related_name='results_club',  
+        blank=True,
+        null=True
+    )        
     
     # nickname fk
     # club 

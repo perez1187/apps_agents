@@ -79,3 +79,21 @@ class Nicknames(models.Model):
 # class Deals(models.Model):
 #     # report, nickname, rb, rebate, created, updated
 #     pass
+
+class Clubs(models.Model):
+    
+    club = models.CharField(
+        verbose_name=_("Club"), 
+        max_length=40, 
+        blank=True,
+        null=True
+    )   
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )          
+
+    def __str__(self):
+        return self.club
