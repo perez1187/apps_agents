@@ -55,7 +55,7 @@ def uploadCSV(file, request):
     dict_users=dict_usernames(agent)
     dict_club = club_dict(reader)
     # print(reader)
-    return
+    
     df1 = reader.drop_duplicates(subset=["nickname","club"])
     # print(df1)
     # return

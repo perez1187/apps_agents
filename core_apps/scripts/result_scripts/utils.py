@@ -25,6 +25,8 @@ def dict_nicknames(file, agent):
     nicknames_dict = {}
     nicknames_qs = Nicknames.objects.filter(agent=agent).values()
 
+    error_list = []
+
     for nickname in nicknames_qs:
         record_key = f'{nickname["club"]}{nickname["nickname"]}'
         record_value = {
@@ -42,7 +44,9 @@ def dict_nicknames(file, agent):
 
         if record_key in nicknames_dict:
             continue
-
+        
+        error_list.append(record_key)
+        continue
         nickname_obj = Nicknames.objects.create(
             agent=agent,
             agents=row["AGENTS"],
@@ -59,7 +63,7 @@ def dict_nicknames(file, agent):
         
         logger.info(f"agent: {agent}: {row['NICKNAME']} Nickname was created")   
         
-    return nicknames_dict
+    return nicknames_dict, error_list
 
 def dict_report_dates(df, agent):
     '''
@@ -140,7 +144,7 @@ def uploadCSV(file, request):
         
     # print(report_dict)
 
-    nicknames_dict = dict_nicknames(reader, request.user)
+    nicknames_dict, list_error = dict_nicknames(reader, request.user)
 
     for _,row in reader.iterrows():
         nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}'  
@@ -152,9 +156,9 @@ def uploadCSV(file, request):
             # metadata
             report_id=report_dict[row["DATE"]],
             nickname_fk_id=nicknames_dict[nickname_fk]["id"],
-            club_fk=club_dic[row["CLUB"]],
+            club_fk_id=club_dic[row["CLUB"]],
             club=row["CLUB"],
-            nickname_id=row["PLAYERS"],
+            # nickname_id=row["PLAYERS"],
             nickname=row["NICKNAME"],
             agents=row["AGENTS"],
 
@@ -179,3 +183,4 @@ def uploadCSV(file, request):
 
         )
         logger.info(f"result {result_obj.pk} was created")   
+    print(list_error)

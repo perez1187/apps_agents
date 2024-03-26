@@ -21,7 +21,7 @@ class Results(models.Model):
         related_name='results_nickname',  
     )  
     club_fk =  models.ForeignKey(
-        Nicknames,
+        Clubs,
         on_delete=models.CASCADE,
         verbose_name=_("Club FK"),
         related_name='results_club',  
