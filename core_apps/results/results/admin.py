@@ -1,6 +1,14 @@
 from django.contrib import admin
 from .models import Results
 
+from rangefilter.filters import (
+    DateRangeFilterBuilder,
+    DateTimeRangeFilterBuilder,
+    NumericRangeFilterBuilder,
+    DateRangeQuickSelectListFilterBuilder,
+)
+
+
 class ResultsAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -29,5 +37,11 @@ class ResultsAdmin(admin.ModelAdmin):
         ]
     list_display_links = ["nickname"]
     # search_fields = ["user__username"]
+    list_filter = [
+        # ("Nickname_Player_User__Result_Nickname_Nickname__reportId__report_date",DateRangeFilterBuilder(title="Report date:")),
+        ("report__report_date",DateRangeFilterBuilder(title="Report date:")),
+        "nickname_fk__player"
+        # "ref_currency"
+    ]
 
 admin.site.register(Results, ResultsAdmin)
