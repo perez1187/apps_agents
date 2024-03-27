@@ -15,6 +15,10 @@ urlpatterns = [
     path("api/user/", include("core_apps.users.profiles.urls")),
     path("api/reports/", include("core_apps.results.reports.urls")), 
     path("api/deals/", include("core_apps.results.deals.urls")),
+
+    path("api/scripts/user/", include("core_apps.scripts.user_scripts.urls")),
+    path("api/scripts/nickname/", include("core_apps.scripts.nickname_scripts.urls")),
+    path("api/scripts/result/", include("core_apps.scripts.result_scripts.urls")),
 ]
 
 admin.site.site_header = "app accounts"

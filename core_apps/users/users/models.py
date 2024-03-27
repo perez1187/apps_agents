@@ -31,3 +31,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+class UserProxy(User):
+     class Meta:
+        proxy = True  
+        verbose_name = "Result by User"
+        verbose_name_plural = "Results by Users"   

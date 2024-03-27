@@ -34,7 +34,13 @@ LOCAL_APPS = [
 
     "core_apps.results.agents",
     "core_apps.results.reports", 
-    "core_apps.results.deals",     
+    "core_apps.results.deals",   
+    "core_apps.results.results", 
+
+    "core_apps.scripts.user_scripts",
+    "core_apps.scripts.nickname_scripts",
+    "core_apps.scripts.result_scripts",    
+
  ] 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -138,6 +144,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS  = 100000000
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (

@@ -5,7 +5,6 @@ from rest_framework import generics,permissions,status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 from core_apps.results.agents.permissions import IsAgent
 from .models import Reports
 from .serializers import AgentReportsListSeriaizer,FileUploadSerializer
@@ -84,7 +83,7 @@ class UploadFileView(generics.CreateAPIView):
         file_type = str(request.data['file'])[-4:]
 
         if file_type == '.csv':
-            uploadCSV(file)
+            uploadCSV(file, request)
         elif file_type == 'xlsx':
             print('xlsx')
         # print(file_type)
@@ -93,13 +92,6 @@ class UploadFileView(generics.CreateAPIView):
                 detail=
                     {"error": "wrong file extension. Upload .csv or .xlsx"}, 
                     status_code=status.HTTP_400_BAD_REQUEST)
-
-        
-        # load sheets
-        # reader = pd.read_csv(file)
-        # raise ServiceUnavailable
-    
-        # df_data_studio_report = pd.read_excel(file,'DATA STUDIO REPORT')
 
         return Response({"status":"tak"},
                         status.HTTP_201_CREATED)
