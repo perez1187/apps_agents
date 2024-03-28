@@ -137,7 +137,8 @@ def uploadCSV(file, request):
     for _,row in reader.iterrows():
         nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}'  
         player_rb = decimal.Decimal(row["RAKE"])*decimal.Decimal(nicknames_dict[nickname_fk]["rb"])
-        player_adj = (decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"])
+        player_adj = ((decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"]))* (-1)
+        player_settlement = decimal.Decimal(row["PROFIT/LOSS"]) + player_rb + player_adj
 
         # print(row["CLUB"])
         result_obj = Results.objects.create(
@@ -164,9 +165,9 @@ def uploadCSV(file, request):
 
             player_rb=player_rb,
             player_adjustment=player_adj,
-            player_settlement= decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+            player_settlement= player_settlement,
 
-            agent_earnings =decimal.Decimal(row["AGENT SETTLEMENT"]) - decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+            agent_earnings =decimal.Decimal(row["AGENT SETTLEMENT"]) - player_settlement,
 
         )
         logger.info(f"result {result_obj.pk} was created")   
