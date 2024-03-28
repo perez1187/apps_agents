@@ -41,6 +41,8 @@ LOCAL_APPS = [
     "core_apps.scripts.nickname_scripts",
     "core_apps.scripts.result_scripts",    
 
+    "view_apps.agents_summary",
+
  ] 
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
