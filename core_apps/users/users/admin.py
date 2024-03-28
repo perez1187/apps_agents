@@ -130,27 +130,20 @@ class UserProxyAdmin(admin.ModelAdmin):
                 .annotate(agent_rb_USD=Sum("agent_rb"))
                 .values("agent_rb_USD")
             ),
-            # _rebate_USD=Subquery(
-            #     Results.objects.filter(nickname_fk__player=OuterRef("pk"))
-            #     .filter(report__report_date__range=[from_date,to_date])                
-            #     .values("nickname_fk__player")
-            #     .annotate(rebate_USD=Sum("player_adjustment"))
-            #     .values("rebate_USD")
-            # ),            
-            # _player_settlement=Subquery(
-            #     settlement.models.Settlement.objects.filter(player=OuterRef("pk"))
-            #     # .filter(report__report_date__range=[from_date,to_date])                
-            #     .values("player")
-            #     .annotate(player_settlement=Sum("transactionUSD"))
-            #     .values("player_settlement")
-            # ),
-        #     _profit_USD=Subquery(
-        #         models.Result.objects.filter(deal__ref=OuterRef("pk"))
-        #         .filter(report__report_date__range=[from_date,to_date])                
-        #         .values("deal__ref")
-        #         .annotate(profit_USD=Sum("profit_USD"))
-        #         .values("profit_USD")
-        #     ),                                                                        
+            _agent_adj=Subquery(
+                Results.objects.filter(nickname_fk__player=OuterRef("pk"))
+                .filter(report__report_date__range=[from_date,to_date])                
+                .values("nickname_fk__player")
+                .annotate(agent_adj=Sum("agent_adjustment"))
+                .values("agent_adj")
+            ),   
+            _agent_earn=Subquery(
+                Results.objects.filter(nickname_fk__player=OuterRef("pk"))
+                .filter(report__report_date__range=[from_date,to_date])                
+                .values("nickname_fk__player")
+                .annotate(agent_earn=Sum("agent_earnings"))
+                .values("agent_earn")
+            ),                                                                                        
 
         )
 
@@ -196,7 +189,19 @@ class UserProxyAdmin(admin.ModelAdmin):
         if obj._agent_rb_USD == None:
             return 0
 
-        return "%.2f $" % obj._agent_rb_USD        
+        return "%.2f $" % obj._agent_rb_USD     
+
+    def agent_adj(self,obj):
+        if obj._agent_adj == None:
+            return 0
+
+        return "%.2f $" % obj._agent_adj   
+    
+    def agent_earnings(self,obj):
+        if obj._agent_earn == None:
+            return 0
+
+        return "%.2f $" % obj._agent_earn           
 
     # def player_all_settlement(self,obj):
     #     if obj._player_settlement == None:
@@ -216,8 +221,10 @@ class UserProxyAdmin(admin.ModelAdmin):
         "rake",
         "player_rb",
         "player_adj",
+        "agent_earnings",
         "agent_settlement",
         "agent_rakeback",
+        "agent_adj"
         # "player_all_settlement",
 
 

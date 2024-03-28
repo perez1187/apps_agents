@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import decimal
 
-from core_apps.results.deals.models import Nicknames
+from core_apps.results.deals.models import Nicknames, Clubs
 from core_apps.results.results.models import Results
 from .models import Reports
 
@@ -115,6 +115,26 @@ def dict_nicknames(file, agent):
         
     return nicknames_dict
 
+def club_dict(df):
+
+    clubs_dict  = {}
+    clubs_unique = df['CLUB'].unique()
+    club_qs = Clubs.objects.all().values()
+
+    for club in club_qs:
+        clubs_dict[club["club"]] = club["id"] 
+        # print(club)
+
+    for c in clubs_unique:
+        if c in clubs_dict:
+            continue
+        club_obj = Clubs.objects.create(
+            club=c
+        )
+
+        logger.info(f"club {c} was created")
+    return clubs_dict
+
 def uploadCSV(file, request):
 
     reader = pd.read_csv(file)
@@ -129,9 +149,7 @@ def uploadCSV(file, request):
     #  
 
     report_dict = dict_report_dates(reader, request.user)
-    
-    # print(report_dict)
-
+    club_dic = club_dict(reader)
     nicknames_dict = dict_nicknames(reader, request.user)
 
     for _,row in reader.iterrows():
@@ -145,6 +163,7 @@ def uploadCSV(file, request):
             # metadata
             report_id=report_dict["today"],
             nickname_fk_id=nicknames_dict[nickname_fk]["id"],
+            club_fk_id=club_dic[row["CLUB"]],
             club=row["CLUB"],
             nickname_id=row["PLAYERS"],
             nickname=row["NICKNAME"],
