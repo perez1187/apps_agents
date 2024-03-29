@@ -24,9 +24,14 @@ class PlayerResults(APIView, Pagination10000):
                .values("nickname_fk__player__profile")
                .annotate(profit_loss=Sum("profit_loss"))
                .values("profit_loss")
-           )
+           ),
+           _profit_loss=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(profit_loss2=Sum("profit_loss"))
+               .values("profit_loss2")
+           ),           
        )
-
 
         players_paginate = self.paginate_queryset(players, request, view=self)
         serializer = serializers.PlayerResultsSerializer(players_paginate, many=True)
@@ -36,4 +41,5 @@ class PlayerResults(APIView, Pagination10000):
 
 
 
-        
+class AgentResultsGraph(APIView):
+    pass
