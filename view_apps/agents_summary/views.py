@@ -41,5 +41,9 @@ class PlayerResults(APIView, Pagination10000):
 
 
 
-class AgentResultsGraph(APIView):
-    pass
+class AgentResults(APIView):
+    
+    def get(self, request, format=None):
+        results = Results.objects.aggregate(
+            res=Sum('profit_loss')
+        )
