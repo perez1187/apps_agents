@@ -40,7 +40,7 @@ def dict_nicknames(file, agent):
 
     for _,row in file.iterrows():
         record_key = f'{row["CLUB"]}{row["NICKNAME"]}'
-        print(record_key)
+        # print(record_key)
 
         if record_key in nicknames_dict:
             continue
