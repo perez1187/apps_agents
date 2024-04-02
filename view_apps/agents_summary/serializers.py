@@ -3,7 +3,7 @@ from core_apps.users.profiles.models import Profile
 from core_apps.results.results.models import Results
 from core_apps.results.reports.models import Reports
 
-class PlayerResultsSerializer(serializers.ModelSerializer):
+class PlayerResultsSerializerOld(serializers.ModelSerializer):
     _profit_loss_USD = serializers.DecimalField(max_digits=25, decimal_places=2)
     _profit_loss = serializers.DecimalField(max_digits=25, decimal_places=2)
 
@@ -49,3 +49,25 @@ class ReportResultSerializer(serializers.ModelSerializer):
             "_players_income",
             "_agent_earn"
         )
+
+class PlayerResultSerializer(serializers.ModelSerializer):
+    _profit_loss = serializers.DecimalField(max_digits=25, decimal_places=2) 
+    _rake = serializers.DecimalField(max_digits=25, decimal_places=2)
+    _rakeback = serializers.DecimalField(max_digits=25, decimal_places=2)
+    _rebate = serializers.DecimalField(max_digits=25, decimal_places=2)  
+    _player_earn = serializers.DecimalField(max_digits=25, decimal_places=2)  
+    _agent_earn = serializers.DecimalField(max_digits=25, decimal_places=2)
+
+    user = serializers.ReadOnlyField(source="user.username")
+
+    class Meta:
+        model = Profile
+        fields = (
+            "user",
+            "_profit_loss",
+            "_rake",
+            "_rakeback",
+            "_rebate",
+            "_player_earn",
+            "_agent_earn"
+        )      

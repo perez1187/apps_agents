@@ -8,7 +8,7 @@ from core_apps.results.reports.models import Reports
 
 from .pagination import Pagination10000
 from .permissions import IsAgentAndOwner
-from .serializers import AgentResultsSerializer, PlayerResultsSerializer, ReportResultSerializer
+from .serializers import AgentResultsSerializer, PlayerResultSerializer, ReportResultSerializer
 
 
 class PlayerResults_old(APIView, Pagination10000):
@@ -42,6 +42,7 @@ class PlayerResults_old(APIView, Pagination10000):
         return  self.get_paginated_response(serializer.data)
 
 class GraphResults(APIView):
+    permission_classes = [IsAgentAndOwner] 
 
     def get(self, request, format=None):
         from_date = request.GET.get('from_date','2000-03-20')
@@ -205,8 +206,8 @@ class GraphResults(APIView):
 
         return Response(serializer.data)
 
-
 class AgentResults(APIView, Pagination10000):
+    permission_classes = [IsAgentAndOwner] 
     
     def get(self, request, format=None):
 
@@ -320,4 +321,68 @@ class AgentResults(APIView, Pagination10000):
 
         return Response(serializer.data)
 
- 
+class PlayerResults(APIView, Pagination10000):
+    """
+    List all reports belongs to Agent,
+    """
+    permission_classes = [IsAgentAndOwner] 
+
+    def get(self, request, format=None):
+
+        from_date = request.GET.get('from_date','2000-03-20')
+        to_date = request.GET.get('to_date','2100-01-01') 
+        
+        players =  Profile.objects.filter(
+            Q(agent=request.user),
+            # Q(user__report_agent__report_date__range=[from_date,to_date]),            
+            ).annotate(
+           _profit_loss=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(profit_loss=Sum("profit_loss"))
+               .values("profit_loss")
+               .filter(report__report_date__range=[from_date,to_date])
+           ),
+           _rake=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(rake=Sum("rake"))
+               .values("rake")
+               .filter(report__report_date__range=[from_date,to_date])
+           ),
+           _rakeback=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(rb=Sum("player_rb"))
+               .values("rb")
+               .filter(report__report_date__range=[from_date,to_date])
+           ),   
+           _rebate=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(rebate=Sum("player_adjustment"))
+               .values("rebate")
+               .filter(report__report_date__range=[from_date,to_date])
+           ),   
+           _player_earn=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(player_earn=Sum("player_settlement"))
+               .values("player_earn")
+               .filter(report__report_date__range=[from_date,to_date])
+           ), 
+           _agent_earn=Subquery(               
+                Results.objects.filter(nickname_fk__player__profile=OuterRef("pk"))               
+               .values("nickname_fk__player__profile")
+               .annotate(agent_earn=Sum("agent_earnings"))
+               .values("agent_earn")
+               .filter(report__report_date__range=[from_date,to_date])
+           ),                                              
+       )
+
+
+        players_paginate = self.paginate_queryset(players, request, view=self)
+        serializer = PlayerResultSerializer(players_paginate, many=True)
+
+        # return Response(serializer.data)
+        return  self.get_paginated_response(serializer.data) 
