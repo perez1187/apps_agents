@@ -49,20 +49,80 @@ class AgentResults(APIView, Pagination10000):
         from_date = request.GET.get('from_date','2000-03-20')
         to_date = request.GET.get('to_date','2100-01-01') 
         club = request.GET.get('club')
+        nickname = request.GET.get('nickname')
 
-        print(from_date)
-        print(to_date)
-        results = Results.objects.filter(
-            Q(nickname_fk__agent__username=request.user),
-            Q(report__report_date__range=[from_date,to_date]),
-            Q(club=club)
-        ).aggregate(
-            _profit_loss=Sum('profit_loss'),
-            _rake=Sum("rake"),
-            _rb= Sum("agent_rb"),
-            _rebate= Sum("agent_adjustment"),
-            _agent_settlement = Sum("agent_settlement")
-        )
+        print(club) 
+        print(nickname)
+
+        if (
+                (club == None or club =="") and
+                (nickname == None or nickname == "")
+            ):  
+                # print("if")
+                results = Results.objects.filter(
+                    Q(nickname_fk__agent__username=request.user),
+                    Q(report__report_date__range=[from_date,to_date]),
+                    # Q(club=club)
+                ).aggregate(
+                    _profit_loss=Sum('profit_loss'),
+                    _rake=Sum("rake"),
+                    _rb= Sum("agent_rb"),
+                    _rebate= Sum("agent_adjustment"),
+                    _agent_settlement = Sum("agent_settlement")
+                )
+        elif (
+                (club != None and club !="") and
+                (nickname == None or nickname == "")            
+        ):  
+                # print("elif1")
+                results = Results.objects.filter(
+                    Q(nickname_fk__agent__username=request.user),
+                    Q(report__report_date__range=[from_date,to_date]),
+                    Q(club=club)
+                ).aggregate(
+                    _profit_loss=Sum('profit_loss'),
+                    _rake=Sum("rake"),
+                    _rb= Sum("agent_rb"),
+                    _rebate= Sum("agent_adjustment"),
+                    _agent_settlement = Sum("agent_settlement")
+                ) 
+        elif (
+                (club == None or club =="") and
+                (nickname != None and nickname != "")
+            ):
+                # print("elif2")
+                results = Results.objects.filter(
+                    Q(nickname_fk__agent__username=request.user),
+                    Q(report__report_date__range=[from_date,to_date]),
+                    Q(nickname_fk__nickname=nickname)
+                    # Q(club=club)
+                ).aggregate(
+                    _profit_loss=Sum('profit_loss'),
+                    _rake=Sum("rake"),
+                    _rb= Sum("agent_rb"),
+                    _rebate= Sum("agent_adjustment"),
+                    _agent_settlement = Sum("agent_settlement")
+                ) 
+        elif (
+                (club != None and club !="") and
+                (nickname != None and nickname != "")
+            ):
+                # print("elif3")
+                results = Results.objects.filter(
+                    Q(nickname_fk__agent__username=request.user),
+                    Q(report__report_date__range=[from_date,to_date]),
+                    Q(nickname_fk__nickname=nickname),
+                    Q(club=club)
+                ).aggregate(
+                    _profit_loss=Sum('profit_loss'),
+                    _rake=Sum("rake"),
+                    _rb= Sum("agent_rb"),
+                    _rebate= Sum("agent_adjustment"),
+                    _agent_settlement = Sum("agent_settlement")
+                )                 
+                                    
+        # print(from_date)
+        # print(to_date)        
 
         # if club is not None:
         #     results.filter(club=club)
