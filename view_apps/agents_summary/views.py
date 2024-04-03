@@ -18,7 +18,10 @@ class ClubSummaryView(APIView,Pagination10000):
 
     def get(self, request, format=None):
 
-        clubs = Clubs.objects.all()
+        # clubs = Clubs.objects.all()
+        clubs = Clubs.objects.filter(
+            Q(results_club__report__agent=request.user),
+        ).values("club").distinct()
         
         clubs_paginate = self.paginate_queryset(clubs, request, view=self)
         serializer = ClubListMenuSerializer(clubs_paginate, many=True)
