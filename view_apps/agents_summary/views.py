@@ -5,10 +5,26 @@ from rest_framework.response import Response
 from core_apps.users.profiles.models import Profile
 from core_apps.results.results.models import Results
 from core_apps.results.reports.models import Reports
+from core_apps.results.deals.models import Clubs
 
 from .pagination import Pagination10000
 from .permissions import IsAgentAndOwner
-from .serializers import AgentResultsSerializer, PlayerResultSerializer, ReportResultSerializer
+from .serializers import (AgentResultsSerializer, ClubListMenuSerializer,
+            PlayerResultSerializer, ReportResultSerializer,ClubResultSerializer)
+
+
+class ClubSummaryView(APIView,Pagination10000):
+    permission_classes = [IsAgentAndOwner] 
+
+    def get(self, request, format=None):
+
+        clubs = Clubs.objects.all()
+        
+        clubs_paginate = self.paginate_queryset(clubs, request, view=self)
+        serializer = ClubListMenuSerializer(clubs_paginate, many=True)
+
+        # return Response(serializer.data)
+        return  self.get_paginated_response(serializer.data)     
 
 
 class PlayerResults_old(APIView, Pagination10000):
@@ -386,3 +402,30 @@ class PlayerResults(APIView, Pagination10000):
 
         # return Response(serializer.data)
         return  self.get_paginated_response(serializer.data) 
+
+class ClubResults(APIView, Pagination10000):
+    permission_classes = [IsAgentAndOwner] 
+
+    def get(self, request, format=None):
+
+        from_date = request.GET.get('from_date','2000-03-20')
+        to_date = request.GET.get('to_date','2100-01-01') 
+
+        clubs = Clubs.objects.annotate(
+           _profit_loss=Subquery(               
+                Results.objects.filter(club_fk=OuterRef("pk"))               
+               .values("club_fk")
+               .annotate(profit_loss=Sum("profit_loss"))
+               .values("profit_loss")
+               .filter(
+                Q(report__report_date__range=[from_date,to_date]),
+                Q(report__agent=request.user),
+                )
+           ),            
+        )
+
+        clubs_paginate = self.paginate_queryset(clubs, request, view=self)
+        serializer = ClubResultSerializer(clubs_paginate, many=True)
+
+        # return Response(serializer.data)
+        return  self.get_paginated_response(serializer.data)         
