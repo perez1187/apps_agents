@@ -8,6 +8,7 @@ class ReportsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reports
         fields = (
+            "id",
             "report_date",
             "description",
             "created_at"
@@ -20,6 +21,7 @@ class ResultListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Results
         fields = (
+            "id",
             "report",
             "club",
             "nickname",
