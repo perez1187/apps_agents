@@ -22,6 +22,26 @@ urlpatterns = [
 
     path("api/views/agents-summary/", include("view_apps.agents_summary.urls")),
     path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+
+    # path("api/views/agents-summary/", include("view_apps.agents_summary.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+
+    # path("api/views/agents-summary/", include("view_apps.agents_summary.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),        
+
+
 ]
 
 admin.site.site_header = "app accounts"

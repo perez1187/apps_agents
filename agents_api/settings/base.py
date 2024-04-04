@@ -42,6 +42,25 @@ LOCAL_APPS = [
     "core_apps.scripts.result_scripts",    
 
     "view_apps.agents_summary",
+    "view_apps.agents_deals",
+    "view_apps.agents_player_results",
+    "view_apps.agents_settings",
+    "view_apps.agents_settlements",
+    # "view_apps.agents_settings",
+
+    "view_apps.player_deals",
+    "view_apps.player_player_results",
+    "view_apps.player_player_settings",
+    "view_apps.player_player_settlements",
+    "view_apps.player_reports",
+    "view_apps.player_summary",
+
+    "view_apps.players_deals",
+    "view_apps.players_player_results",
+    "view_apps.players_reports",
+    "view_apps.players_settings",
+    "view_apps.players_settlements",
+    "view_apps.players_summary",
 
  ] 
 
