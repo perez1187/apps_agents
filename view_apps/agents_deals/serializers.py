@@ -4,31 +4,26 @@ from core_apps.results.reports.models import Reports
 from core_apps.results.results.models import Results
 
 
-class ResultListSerializer(serializers.ModelSerializer):  
+class NicknameDealsSerializer(serializers.ModelSerializer):  
 
-    report = serializers.ReadOnlyField(source="report.report_date")
+    player = serializers.ReadOnlyField(source="player.username")
 
     class Meta:
         model = Results
         fields = (
             "id",
-            "report",
-            "club",
+            "player",
             "nickname",
-            "nickname_id",
-            "agents",
-            "profit_loss",
-            "rake",
-            "agent_deal",
-            "agent_rb",
-            "agent_adjustment",
-            "agent_settlement",
-            "player_deal_rb",
-            "player_deal_adjustment",
-            "player_rb",
-            "player_adjustment",
-            "player_settlement",
-            "agent_earnings",
-            "created_at",
-            "updated_at"
-        )            
+
+        )     
+
+class PlayerListFromAgent(serializers.ModelSerializer):  
+
+    player = serializers.ReadOnlyField(source="user.username")
+
+    class Meta:
+        model = Results
+        fields = (
+
+            "player",
+        )                  
