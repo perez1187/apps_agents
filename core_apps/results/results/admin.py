@@ -37,6 +37,7 @@ class ResultsAdmin(admin.ModelAdmin):
         "updated_at"
         ]
     list_display_links = ["nickname"]
+    list_per_page = 4
     search_fields = ["nickname","club"]
     list_filter = [
         # ("Nickname_Player_User__Result_Nickname_Nickname__reportId__report_date",DateRangeFilterBuilder(title="Report date:")),

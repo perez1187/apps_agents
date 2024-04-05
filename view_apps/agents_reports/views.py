@@ -1,9 +1,12 @@
 from rest_framework.views import APIView
 from django.db.models import OuterRef, Subquery, Sum, Q
+from rest_framework import generics,permissions,status
+
+from rest_framework.response import Response
 
 from .pagination import Pagination10000, Pagination100
 from .permissions import IsAgentAndOwner
-from .serializers import ReportsListSerializer, ResultListSerializer
+from .serializers import ReportsListSerializer, ResultListSerializer, ResultUpdateSerializer
 
 from core_apps.results.reports.models import Reports
 from core_apps.results.results.models import Results
@@ -43,3 +46,36 @@ class ResultList(APIView, Pagination100):
 
         # return Response(serializer.data)
         return  self.get_paginated_response(serializer.data) 
+
+class ResultUpdateView(APIView):
+    """
+    Retrieve, update or delete a nickname instance.
+    """
+    permission_classes = [IsAgentAndOwner] 
+
+    def get_object(self, pk):
+
+        # print(request.data["id"])
+        try:
+            obj =  Results.objects.get(pk=pk)
+        except Results.DoesNotExist:
+            raise Http404
+        
+        #  call has object permissions
+        self.check_object_permissions(self.request, obj)  
+        return obj   
+
+    # def get(self, request, pk, format=None):
+    #     result = self.get_object(pk)
+    #     #########
+    #     serializer = NicknameSeriaizer(nickname)
+    #     return Response(serializer.data)        
+
+    def put(self, request, pk, format=None):
+        result = self.get_object(pk)
+
+        serializer = ResultUpdateSerializer(result, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        

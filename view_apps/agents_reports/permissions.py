@@ -11,7 +11,7 @@ class IsAgentAndOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
 
         # Instance must have an attribute named `owner`.
-        return obj.agent == request.user
+        return obj.nickname_fk.agent == request.user
 
 
 

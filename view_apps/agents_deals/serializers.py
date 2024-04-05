@@ -36,9 +36,7 @@ class PlayerListFromAgent(serializers.ModelSerializer):
 
 class NicknameUpdateSeriaizer(serializers.ModelSerializer):
 
-
-    player_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    # player= serializers.ReadOnlyField(source="player.username")
+    player_id = serializers.IntegerField()
 
     class Meta:
         model = Nicknames
