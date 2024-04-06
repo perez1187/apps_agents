@@ -1,7 +1,8 @@
 from django.urls import path
-# from .views import   ReportList, ResultList
+from .views import   PlayerAggregateResults, GraphResultsView
 
 urlpatterns = [
-    # path('reports-list/',ReportList.as_view()),
+    path('player-results/',PlayerAggregateResults.as_view()),
+    path('graph-results/',GraphResultsView.as_view()),
 
 ]

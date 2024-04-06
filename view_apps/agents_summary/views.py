@@ -342,7 +342,7 @@ class AgentResults(APIView, Pagination10000):
 
 class PlayerResults(APIView, Pagination10000):
     """
-    List all reports belongs to Agent,
+    All players results belong to Agent,
     """
     permission_classes = [IsAgentAndOwner] 
 
@@ -413,6 +413,10 @@ class ClubResults(APIView, Pagination10000):
 
         from_date = request.GET.get('from_date','2000-03-20')
         to_date = request.GET.get('to_date','2100-01-01') 
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'         
 
         clubs = Clubs.objects.annotate(
            _profit_loss=Subquery(               
