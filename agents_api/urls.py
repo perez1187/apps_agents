@@ -24,9 +24,10 @@ urlpatterns = [
     path("api/views/agents-summary/", include("view_apps.agents_summary.urls")),
     path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
     path("api/views/agents-deals/", include("view_apps.agents_deals.urls")),
+    # path("api/views/agents-settlements/", include("view_apps.agents_deals.urls")),
     path("api/views/agents-player-results/", include("view_apps.agents_player_results.urls")),
     path("api/views/agents-settings/", include("view_apps.agents_settings.urls")),
-    # path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
+    path("api/views/agents-settlements/", include("view_apps.agents_settlements.urls")),
 
     path("api/views/player-deals/", include("view_apps.player_deals.urls")),
     path("api/views/player-player-results/", include("view_apps.player_player_results.urls")),
@@ -41,6 +42,7 @@ urlpatterns = [
     path("api/views/players-player-settlements/", include("view_apps.players_settlements.urls")),
     path("api/views/players-reports/", include("view_apps.players_reports.urls")),
     path("api/views/players-summary/", include("view_apps.players_summary.urls")),     
+
 
 
 ]

@@ -1,7 +1,7 @@
 from django.urls import path
-# from .views import   ReportList, ResultList
+from .views import   CurrencyList
 
 urlpatterns = [
-    # path('reports-list/',ReportList.as_view()),
+    path('currency-list/',CurrencyList.as_view()),
 
 ]
