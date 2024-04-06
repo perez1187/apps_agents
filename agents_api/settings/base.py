@@ -39,7 +39,9 @@ LOCAL_APPS = [
 
     "core_apps.scripts.user_scripts",
     "core_apps.scripts.nickname_scripts",
-    "core_apps.scripts.result_scripts",    
+    "core_apps.scripts.result_scripts", 
+
+    "core_apps.settlements",   
 
     "view_apps.agents_summary",
     "view_apps.agents_deals",
