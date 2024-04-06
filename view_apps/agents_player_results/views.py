@@ -29,8 +29,11 @@ class PlayerAggregateResults(APIView):
         player = request.GET.get('player','admin')
 
 
-        # print(club) 
-        # print(nickname)
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01' 
+      
 
         #  1 club brak player brak
         if (
@@ -115,8 +118,13 @@ class PlayerAggregateResults(APIView):
 
                     _agent_earnings=Sum("agent_earnings")   
                 ) 
-                agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
-                agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']
+
+                if results['_agent_rb'] != None :
+                    agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
+                    agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']
+                else:
+                    agent_earnings_rb = 0
+                    agent_earnings_rebate =0
 
         # club jest player jest
         elif (
@@ -144,8 +152,12 @@ class PlayerAggregateResults(APIView):
 
                     _agent_earnings=Sum("agent_earnings")                    
                 ) 
-                agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
-                agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']                                
+                if results['_agent_rb'] != None :
+                    agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
+                    agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']
+                else:
+                    agent_earnings_rb = 0
+                    agent_earnings_rebate =0                      
         
         
         results["_agent_earnings_rb"] = agent_earnings_rb
