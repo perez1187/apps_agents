@@ -342,7 +342,7 @@ class AgentResults(APIView, Pagination10000):
 
 class PlayerResults(APIView, Pagination10000):
     """
-    List all reports belongs to Agent,
+    All players results belong to Agent,
     """
     permission_classes = [IsAgentAndOwner] 
 
