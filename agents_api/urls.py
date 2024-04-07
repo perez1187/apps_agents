@@ -32,7 +32,7 @@ urlpatterns = [
     path("api/views/player-deals/", include("view_apps.player_deals.urls")),
     path("api/views/player-player-results/", include("view_apps.player_player_results.urls")),
     path("api/views/player-player-settings/", include("view_apps.player_player_settings.urls")),
-    path("api/views/player-player-settlements/", include("view_apps.player_player_settlements.urls")),
+    path("api/views/player-settlements/", include("view_apps.player_player_settlements.urls")),
     path("api/views/player-reports/", include("view_apps.player_reports.urls")),
     path("api/views/player-summary/", include("view_apps.player_summary.urls")),
 
