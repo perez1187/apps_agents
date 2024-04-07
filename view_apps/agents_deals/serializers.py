@@ -11,15 +11,21 @@ User = get_user_model()
 class NicknameDealsSerializer(serializers.ModelSerializer):  
 
     player = serializers.ReadOnlyField(source="player.username")
+    agent = serializers.ReadOnlyField(source="agent.username")
 
     class Meta:
-        model = Results
-        fields = (
-            "id",
-            "player",
-            "nickname",
+        model = Nicknames
+        fields = '__all__'
+        # (
+        #     "id",
+        #     "player",
+        #     "nickname",
+        #     "nickname_id",
+        #     "club",
+        #     "rb",
+        #     "rebate",
 
-        )     
+        # )     
 
 class PlayerListFromAgent(serializers.ModelSerializer):  
 
