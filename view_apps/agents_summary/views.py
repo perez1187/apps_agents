@@ -68,6 +68,10 @@ class GraphResults(APIView):
         to_date = request.GET.get('to_date','2100-01-01') 
         club = request.GET.get('club')
         nickname = request.GET.get('nickname') 
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'         
 
         if (
                 (club == None or club =="") and
@@ -95,7 +99,7 @@ class GraphResults(APIView):
                     .annotate(agent_earnings=Sum("agent_earnings"))
                     .values("agent_earnings")
                 ),                            
-            )
+            ).distinct()  
         elif (
                 (club != None and club !="") and
                 (nickname == None or nickname == "")            
@@ -135,7 +139,7 @@ class GraphResults(APIView):
                         Q(club=club)                        
                     )                        
                 ),                            
-            )  
+            ).distinct()    
         elif (
                 (club == None or club =="") and
                 (nickname != None and nickname != "")
@@ -177,7 +181,7 @@ class GraphResults(APIView):
                         # Q(club=club)                        
                     )                        
                 ),                            
-            )    
+            ).distinct()      
         elif (
                 (club != None and club !="") and
                 (nickname != None and nickname != "")
@@ -219,7 +223,7 @@ class GraphResults(APIView):
                         Q(club=club)                        
                     )                    
                 ),                            
-            )                                             
+            ).distinct()                                               
 
         serializer = ReportResultSerializer(results, many=True)
 
@@ -234,6 +238,10 @@ class AgentResults(APIView, Pagination10000):
         to_date = request.GET.get('to_date','2100-01-01') 
         club = request.GET.get('club')
         nickname = request.GET.get('nickname')
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'         
 
         # print(club) 
         # print(nickname)
@@ -350,6 +358,10 @@ class PlayerResults(APIView, Pagination10000):
 
         from_date = request.GET.get('from_date','2000-03-20')
         to_date = request.GET.get('to_date','2100-01-01') 
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'         
         
         players =  Profile.objects.filter(
             Q(agent=request.user),

@@ -1,7 +1,12 @@
 from django.urls import path
-# from .views import   ReportList, ResultList
+from .views import   PlayerAggregateResultsView, GraphResults, PlayerResults,ClubResults,ClubSummaryView
 
 urlpatterns = [
-    # path('reports-list/',ReportList.as_view()),
+    # path('player-results/',PlayerResults.as_view()),
+    path('player-aggregate-results/',PlayerAggregateResultsView.as_view()),
+    path('graph-results/',GraphResults.as_view()),
+    # path('player-results/',PlayerResults.as_view()),
+    # path('clubs-results/',ClubResults.as_view()),
 
+    path('clubs-list/',ClubSummaryView.as_view()),
 ]
