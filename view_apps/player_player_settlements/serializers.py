@@ -1,34 +1,21 @@
 from rest_framework import serializers
-
-from core_apps.results.reports.models import Reports
-from core_apps.results.results.models import Results
+from core_apps.settlements.models import Settlement
 
 
-class ResultListSerializer(serializers.ModelSerializer):  
-
-    report = serializers.ReadOnlyField(source="report.report_date")
+class SettlementListCreateSerializer(serializers.ModelSerializer):
+    player = serializers.ReadOnlyField(source="player.username")
+    agent = serializers.ReadOnlyField(source="agent.username")
+    currency = serializers.ReadOnlyField(source="currency.currency")
 
     class Meta:
-        model = Results
-        fields = (
-            "id",
-            "report",
-            "club",
-            "nickname",
-            "nickname_id",
-            "agents",
-            "profit_loss",
-            "rake",
-            "agent_deal",
-            "agent_rb",
-            "agent_adjustment",
-            "agent_settlement",
-            "player_deal_rb",
-            "player_deal_adjustment",
-            "player_rb",
-            "player_adjustment",
-            "player_settlement",
-            "agent_earnings",
-            "created_at",
-            "updated_at"
-        )            
+        model = Settlement
+        fields = '__all__'
+        # fields = [
+        #     "player",
+        #     "date",
+        #     "transactionUSD",
+        #     "transactionValue",
+        #     "currency",
+        #     "exchangeRate",
+        #     "description"
+        # ]

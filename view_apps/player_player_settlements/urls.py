@@ -1,7 +1,10 @@
 from django.urls import path
-# from .views import   ReportList, ResultList
+from .views import   SettlementList
 
 urlpatterns = [
-    # path('reports-list/',ReportList.as_view()),
+
+    path('settlements/',SettlementList.as_view()),
+
+
 
 ]
