@@ -15,11 +15,20 @@ class Currency(models.Model):
 
 class Settlement(models.Model):
     
+    agent = models.ForeignKey(
+        User, 
+        on_delete=models.RESTRICT, 
+        null=True, 
+        blank=True,
+        related_name="settlement_agent"         
+        ) # change cascade
+    
     player = models.ForeignKey(
         User, 
-        on_delete=models.CASCADE, 
+        on_delete=models.RESTRICT, 
         null=True, 
-        blank=True         
+        blank=True,
+        related_name="settlement_player"         
         ) # change cascade
     
     date = models.DateField(
@@ -71,3 +80,9 @@ class Settlement(models.Model):
         null=True,
         help_text = "OPTIONAL additional info about transaction")
 
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )        

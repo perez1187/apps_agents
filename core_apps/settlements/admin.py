@@ -19,6 +19,7 @@ class SettlementAdmin(admin.ModelAdmin):
         return obj.date.strftime("%Y-%m-%d")
 
     list_display = [
+        "agent",
         "player",
         # "date", 
         "Date_Trans",
@@ -26,7 +27,9 @@ class SettlementAdmin(admin.ModelAdmin):
         "transactionValue",
         "currency",
         "exchangeRate",
-        "description"
+        "description",
+        "created_at",
+        "updated_at"
         ]
     list_display_links = ["player"]
     search_fields = ["player__username"]
