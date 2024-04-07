@@ -16,7 +16,11 @@ class ReportList(APIView,Pagination10000):
 
     def get(self, request, format=None):
         from_date = request.GET.get('from_date','2000-03-20')
-        to_date = request.GET.get('to_date','2100-01-01')         
+        to_date = request.GET.get('to_date','2100-01-01')  
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'                 
 
         # clubs = Clubs.objects.all()
         reports = Reports.objects.filter(
@@ -32,9 +36,14 @@ class ReportList(APIView,Pagination10000):
         return  self.get_paginated_response(serializer.data) 
 
 class ResultList(APIView, Pagination100):
+    permission_classes = [IsAgentAndOwner] 
     def get(self, request, format=None):    
         from_date = request.GET.get('from_date','2000-03-20')
-        to_date = request.GET.get('to_date','2100-01-01')          
+        to_date = request.GET.get('to_date','2100-01-01')  
+        if from_date =="":
+            from_date ="2000-03-20"
+        if to_date=="":
+            to_date =    '2100-01-01'                  
 
         results = Results.objects.filter(
             Q(report__agent=request.user),
