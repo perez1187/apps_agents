@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import decimal
 
-from core_apps.results.deals.models import Nicknames
+from core_apps.results.deals.models import Nicknames, Clubs
 from core_apps.results.results.models import Results
 from .models import Reports
 
@@ -115,6 +115,26 @@ def dict_nicknames(file, agent):
         
     return nicknames_dict
 
+def club_dict(df):
+
+    clubs_dict  = {}
+    clubs_unique = df['CLUB'].unique()
+    club_qs = Clubs.objects.all().values()
+
+    for club in club_qs:
+        clubs_dict[club["club"]] = club["id"] 
+        # print(club)
+
+    for c in clubs_unique:
+        if c in clubs_dict:
+            continue
+        club_obj = Clubs.objects.create(
+            club=c
+        )
+
+        logger.info(f"club {c} was created")
+    return clubs_dict
+
 def uploadCSV(file, request):
 
     reader = pd.read_csv(file)
@@ -129,21 +149,21 @@ def uploadCSV(file, request):
     #  
 
     report_dict = dict_report_dates(reader, request.user)
-    
-    # print(report_dict)
-
+    club_dic = club_dict(reader)
     nicknames_dict = dict_nicknames(reader, request.user)
 
     for _,row in reader.iterrows():
         nickname_fk = f'{row["CLUB"]}{row["NICKNAME"]}'  
         player_rb = decimal.Decimal(row["RAKE"])*decimal.Decimal(nicknames_dict[nickname_fk]["rb"])
-        player_adj = (decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"])
+        player_adj = ((decimal.Decimal(row["PROFIT/LOSS"]) + player_rb) * decimal.Decimal(nicknames_dict[nickname_fk]["rebate"]))* (-1)
+        player_settlement = decimal.Decimal(row["PROFIT/LOSS"]) + player_rb + player_adj
 
         # print(row["CLUB"])
         result_obj = Results.objects.create(
             # metadata
             report_id=report_dict["today"],
             nickname_fk_id=nicknames_dict[nickname_fk]["id"],
+            club_fk_id=club_dic[row["CLUB"]],
             club=row["CLUB"],
             nickname_id=row["PLAYERS"],
             nickname=row["NICKNAME"],
@@ -164,9 +184,9 @@ def uploadCSV(file, request):
 
             player_rb=player_rb,
             player_adjustment=player_adj,
-            player_settlement= decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+            player_settlement= player_settlement,
 
-            agent_earnings =decimal.Decimal(row["AGENT SETTLEMENT"]) - decimal.Decimal(row["PROFIT/LOSS"]) + player_rb - player_adj,
+            agent_earnings =decimal.Decimal(row["AGENT SETTLEMENT"]) - player_settlement,
 
         )
         logger.info(f"result {result_obj.pk} was created")   

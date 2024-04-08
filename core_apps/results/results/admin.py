@@ -20,23 +20,25 @@ class ResultsAdmin(admin.ModelAdmin):
         "nickname_id",
         "agents",
         "club",
+        "player_settlement",
+        "agent_settlement",
+        "agent_earnings",
         "profit_loss",
         "rake",
         "agent_deal",
-        "agent_rb",
-        "agent_adjustment",
-        "agent_settlement",
+        "agent_rb",        
+        "agent_adjustment",                
         "player_deal_rb",
         "player_deal_adjustment",
         "player_rb",
         "player_adjustment",
         "player_settlement",
-        "agent_earnings",
         "created_at",
         "updated_at"
         ]
     list_display_links = ["nickname"]
-    # search_fields = ["user__username"]
+    list_per_page = 4
+    search_fields = ["nickname","club"]
     list_filter = [
         # ("Nickname_Player_User__Result_Nickname_Nickname__reportId__report_date",DateRangeFilterBuilder(title="Report date:")),
         ("report__report_date",DateRangeFilterBuilder(title="Report date:")),

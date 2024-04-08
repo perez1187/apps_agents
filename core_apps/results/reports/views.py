@@ -71,7 +71,7 @@ class ReportView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UploadFileView(generics.CreateAPIView):
-    permission_classes = [permissions.IsAdminUser,IsAgentAndOwner]
+    permission_classes = [IsAgentAndOwner]
     serializer_class = FileUploadSerializer
     
     @transaction.atomic

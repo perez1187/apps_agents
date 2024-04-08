@@ -39,7 +39,30 @@ LOCAL_APPS = [
 
     "core_apps.scripts.user_scripts",
     "core_apps.scripts.nickname_scripts",
-    "core_apps.scripts.result_scripts",    
+    "core_apps.scripts.result_scripts", 
+
+    "core_apps.settlements",   
+
+    "view_apps.agents_summary",
+    "view_apps.agents_deals",
+    "view_apps.agents_player_results",
+    "view_apps.agents_settings",
+    "view_apps.agents_settlements",
+    # "view_apps.agents_settings",
+
+    "view_apps.player_deals",
+    "view_apps.player_player_results",
+    "view_apps.player_player_settings",
+    "view_apps.player_player_settlements",
+    "view_apps.player_reports",
+    "view_apps.player_summary",
+
+    "view_apps.players_deals",
+    "view_apps.players_player_results",
+    "view_apps.players_reports",
+    "view_apps.players_settings",
+    "view_apps.players_settlements",
+    "view_apps.players_summary",
 
  ] 
 
@@ -49,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -178,7 +202,13 @@ DJOSER = {
     },
 }
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+     'http://localhost:3001',
+     'http://localhost:3002'
+]
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 LOGGING = {
     "version": 1,
