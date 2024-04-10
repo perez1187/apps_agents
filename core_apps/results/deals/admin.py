@@ -15,7 +15,15 @@ class NicknamesAdmin(admin.ModelAdmin):
         "updated_at"
         ]
     list_display_links = ["nickname"]
-    search_fields = ["nickname"]
+    search_fields = [
+        "nickname",
+        "club"
+        ]
+    search_fields = ["nickname","club"]
+    search_by=[
+        "Nickname and Club",
+    ] 
+    search_help_text = f'Search by: {", ".join(search_by)}'           
 
 admin.site.register(Nicknames, NicknamesAdmin)
 
@@ -26,5 +34,6 @@ class ClubsAdmin(admin.ModelAdmin):
         ]
     list_display_links = ["club"]
     search_fields = ["club"]
+    
 
 admin.site.register(Clubs, ClubsAdmin)
