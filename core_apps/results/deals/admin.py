@@ -17,11 +17,12 @@ class NicknamesAdmin(admin.ModelAdmin):
     list_display_links = ["nickname"]
     search_fields = [
         "nickname",
-        "club"
+        "club",
+        "player"
         ]
     search_fields = ["nickname","club"]
     search_by=[
-        "Nickname and Club",
+        "Nickname,Club and Player",
     ] 
     search_help_text = f'Search by: {", ".join(search_by)}'           
 
