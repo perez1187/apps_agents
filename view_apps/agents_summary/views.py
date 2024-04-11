@@ -337,8 +337,12 @@ class AgentResults(APIView, Pagination10000):
                     _agent_earnings=Sum("agent_earnings")                    
                 )                 
         
-        agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
-        agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']
+        if results['_agent_rb'] != None and results['_player_rb'] != None:
+            agent_earnings_rb=results['_agent_rb'] - results['_player_rb']
+            agent_earnings_rebate = results['_agent_rebate'] -results['_player_rebate']
+        else:
+            agent_earnings_rb = 0
+            agent_earnings_rebate =0
         
         results["_agent_earnings_rb"] = agent_earnings_rb
         results["_agent_earnings_rebate"]=agent_earnings_rebate
