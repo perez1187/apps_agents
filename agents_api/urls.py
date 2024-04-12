@@ -20,6 +20,7 @@ urlpatterns = [
     path("api/scripts/user/", include("core_apps.scripts.user_scripts.urls")),
     path("api/scripts/nickname/", include("core_apps.scripts.nickname_scripts.urls")),
     path("api/scripts/result/", include("core_apps.scripts.result_scripts.urls")),
+    path("api/scripts/settlemets/", include("core_apps.scripts.settlements_script.urls")),
 
     path("api/views/agents-summary/", include("view_apps.agents_summary.urls")),
     path("api/views/agents-reports/", include("view_apps.agents_reports.urls")),
