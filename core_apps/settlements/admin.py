@@ -41,6 +41,7 @@ class SettlementAdmin(admin.ModelAdmin):
         ("date",DateRangeFilterBuilder(title="Transaction Date:")),
         # "player"
     ]
+    ordering= ("-date",)
 
 admin.site.register(models.Settlement, SettlementAdmin)
 
