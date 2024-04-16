@@ -37,12 +37,12 @@ class ResultsAdmin(admin.ModelAdmin):
         "updated_at"
         ]
     list_display_links = ["nickname"]
-    list_per_page = 4
-    # search_fields = ["nickname","club"]
-    # search_by=[
-    #     "Nickname and Club",
-    # ]    
-    # search_help_text = f'Search by: {", ".join(search_by)}'  
+    list_per_page = 20
+    search_fields = ["nickname","nickname_fk__player__username"]
+    search_by=[
+        "Nickname and Player",
+    ]    
+    search_help_text = f'Search by: {", ".join(search_by)}'  
     list_filter = [
         # ("Nickname_Player_User__Result_Nickname_Nickname__reportId__report_date",DateRangeFilterBuilder(title="Report date:")),
         ("report__report_date",DateRangeFilterBuilder(title="Report date:")),
