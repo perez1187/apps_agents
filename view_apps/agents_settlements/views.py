@@ -84,6 +84,7 @@ class SettlementList(APIView):
         return Response(serializer.data)
 
 class DeleteSettlement(APIView):
+    permission_classes = [IsAgentAndOwner]
     def get_object(self, pk):
         try:
             obj =  Settlement.objects.get(pk=pk)
