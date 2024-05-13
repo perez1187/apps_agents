@@ -173,7 +173,7 @@ def uploadCSV(file, request):
             profit_loss=row["PROFIT/LOSS"],
             rake= row["RAKE"],
 
-            agent_deal=row["DEAL"],
+            agent_deal=row[" DEAL"],
             agent_rb=row["RAKEBACK"],
             agent_adjustment=row["ADJUSTMENT"],
             agent_settlement=row["AGENT SETTLEMENT"],
