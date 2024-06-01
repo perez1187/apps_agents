@@ -18,6 +18,7 @@ def export_results(modeladmin, request, queryset):
     writer = csv.writer(response)
     writer.writerow([
         "report", 
+        # "CLUB",
         "player",
         "nickname",
         "nickname_id",
