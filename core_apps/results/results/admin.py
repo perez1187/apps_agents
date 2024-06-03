@@ -19,29 +19,29 @@ def export_results(modeladmin, request, queryset):
     writer.writerow([
         "report", 
         "player",
-        "nickname",
-        "nickname_id",
-        # 
-        "club",
-        "agent_settlement",
-        "profit_loss",
-        "rake",
-        "agent_deal",
-        "agent_rb",        
-        "agent_adjustment",                
+        "CLUB",
+        "PLAYERS",
+        "NICKNAME",
+        "PROFIT/LOSS",
+        "RAKE",
+        " DEAL",
+        "RAKEBACK",
+        "ADJUSTMENT",
+        "AGENT SETTLEMENT",
+               
         ])
     results = queryset.values_list(
         "report__report_date", 
         "nickname_fk__player__username",
-        "nickname",
-        "nickname_id",
         "club",
-        "agent_settlement",
+        "nickname_id",
+        "nickname",
         "profit_loss",
         "rake",
-        "agent_deal",
-        "agent_rb",        
-        "agent_adjustment", 
+        "player_deal_rb",
+        "player_rb",
+        "player_adjustment",
+        "player_settlement",
 
         )
 
