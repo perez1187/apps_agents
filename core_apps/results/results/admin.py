@@ -18,7 +18,7 @@ def export_results(modeladmin, request, queryset):
     writer = csv.writer(response)
     writer.writerow([
         "report", 
-        "player",
+        "AGENTS",
         "CLUB",
         "PLAYERS",
         "NICKNAME",
@@ -28,7 +28,7 @@ def export_results(modeladmin, request, queryset):
         "RAKEBACK",
         "ADJUSTMENT",
         "AGENT SETTLEMENT",
-        "AGENTS",
+        
                
         ])
     results = queryset.values_list(
@@ -43,7 +43,7 @@ def export_results(modeladmin, request, queryset):
         "player_rb",
         "player_adjustment",
         "player_settlement",
-        "agents",
+        
 
         )
 
