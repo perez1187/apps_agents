@@ -28,6 +28,7 @@ def export_results(modeladmin, request, queryset):
         "RAKEBACK",
         "ADJUSTMENT",
         "AGENT SETTLEMENT",
+        "AGENTS",
                
         ])
     results = queryset.values_list(
@@ -42,6 +43,7 @@ def export_results(modeladmin, request, queryset):
         "player_rb",
         "player_adjustment",
         "player_settlement",
+        "agents",
 
         )
 
